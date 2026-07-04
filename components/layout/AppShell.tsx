@@ -1,3 +1,4 @@
+// TODO: Add collapsible mobile sidebar
 import { ReactNode } from "react";
 import { AppSidebar } from "./AppSidebar";
 import { AppNavbar } from "./AppNavbar";

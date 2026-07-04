@@ -12,7 +12,7 @@ export function InfoCard({
   icon,
 }: InfoCardProps) {
   return (
-    <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6 transition hover:border-zinc-700">
+    <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/40">
       <div className="mb-4 text-zinc-400">
         {icon}
       </div>
@@ -21,7 +21,7 @@ export function InfoCard({
         {title}
       </h3>
 
-      <p className="mt-2 text-xl font-semibold">
+      <p className="mt-2 text-xl font-semibold text-white">
         {value}
       </p>
     </div>
