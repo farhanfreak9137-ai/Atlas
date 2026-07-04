@@ -1,16 +1,13 @@
 import { AppShell } from "@/components/layout/AppShell";
+import { GreetingCard } from "@/components/dashboard/GreetingCard";
+import { QuickStatsSection } from "@/components/dashboard/QuickStatsSection";
 
 export default function Home() {
   return (
     <AppShell>
-      <div>
-        <h1 className="text-4xl font-bold">
-          Dashboard
-        </h1>
-
-        <p className="mt-2 text-zinc-400">
-          Welcome back, Farhan.
-        </p>
+      <div className="space-y-8">
+        <GreetingCard />
+        <QuickStatsSection />
       </div>
     </AppShell>
   );
