@@ -11,15 +11,16 @@ export function TaskItem({
   onToggle,
   onDelete,
 }: TaskItemProps) {
-  return (
-    <div className="flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-900 p-4">
-      <div className="flex items-center gap-3">
-        <input
-          type="checkbox"
-          checked={task.completed}
-          onChange={() => onToggle(task.id)}
-        />
+ return (
+  <div className="flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-900 p-4">
+    <div className="flex items-center gap-3">
+      <input
+        type="checkbox"
+        checked={task.completed}
+        onChange={() => onToggle(task.id)}
+      />
 
+      <div>
         <span
           className={
             task.completed
@@ -29,25 +30,33 @@ export function TaskItem({
         >
           {task.title}
         </span>
-        <p
-  className={`text-xs font-medium ${
-    task.priority === "high"
-      ? "text-red-500"
-      : task.priority === "medium"
-      ? "text-yellow-500"
-      : "text-green-500"
-  }`}
->
-  {task.priority.toUpperCase()}
-</p>
-      </div>
 
-      <button
-        onClick={() => onDelete(task.id)}
-        className="rounded-lg bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700"
-      >
-        Delete
-      </button>
+        <p
+          className={`text-xs font-medium ${
+            task.priority === "high"
+              ? "text-red-500"
+              : task.priority === "medium"
+              ? "text-yellow-500"
+              : "text-green-500"
+          }`}
+        >
+          {task.priority.toUpperCase()}
+        </p>
+
+        {task.dueDate && (
+          <p className="text-xs text-zinc-500">
+            📅 {task.dueDate}
+          </p>
+        )}
+      </div>
     </div>
-  );
+
+    <button
+      onClick={() => onDelete(task.id)}
+      className="rounded-lg bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700"
+    >
+      Delete
+    </button>
+  </div>
+);
 }

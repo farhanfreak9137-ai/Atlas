@@ -15,14 +15,15 @@ export function TaskList() {
 
   function addTask(
   title: string,
-  priority: TaskPriority
+  priority: TaskPriority,
+  dueDate: string
 ) {
   const newTask: Task = {
     id: crypto.randomUUID(),
     title,
     completed: false,
     priority,
-
+    dueDate,
     };
 
     setTasks((previousTasks) => [...previousTasks, newTask]);
