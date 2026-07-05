@@ -2,9 +2,10 @@ import { AppShell } from "@/components/layout/AppShell";
 import { GreetingCard } from "@/components/dashboard/GreetingCard";
 import { QuickStatsSection } from "@/components/dashboard/QuickStatsSection";
 import { getDashboardData } from "@/services/dashboard.service";
-import { DashboardGrid } from "@/components/dashboard/dashboardgrid";
+import { DashboardGrid } from "@/components/dashboard/DashboardGrid";
 import { TodaysFocus } from "@/components/dashboard/TodaysFocus";
-const dashboard = getDashboardData();
+import { AIInsightCard } from "@/components/dashboard/AIInsightCard";
+const  dashboard = getDashboardData();
 export default function Home() {
   return (
     <AppShell>
@@ -23,6 +24,7 @@ export default function Home() {
       </div>
 
     </DashboardGrid>
+    <AIInsightCard />
 
   </div>
     </AppShell>

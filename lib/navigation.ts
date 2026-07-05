@@ -4,6 +4,7 @@ import {
   BookOpen,
   Target,
   CheckSquare,
+  Repeat,
   Dumbbell,
   Trophy,
   GraduationCap,
@@ -16,6 +17,11 @@ export const navigation = [
     title: "Dashboard",
     icon: LayoutDashboard,
     href: "/",
+  },
+  {
+    title: "Tasks",
+    icon: CheckSquare,
+    href: "/tasks",
   },
   {
     title: "AI",
@@ -34,7 +40,7 @@ export const navigation = [
   },
   {
     title: "Habits",
-    icon: CheckSquare,
+    icon: Repeat,
     href: "/habits",
   },
   {

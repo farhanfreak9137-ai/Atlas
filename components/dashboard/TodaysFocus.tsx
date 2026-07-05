@@ -1,16 +1,10 @@
 import { Section } from "@/components/common/Section";
 import { DashboardPanel } from "@/components/common/DashboardPanel";
-<Section
-  title="Today's Focus"
-  subtitle="Your priorities for today" children={undefined}>
-  {/* existing card content */}
-</Section>
+import { getDashboardData } from "@/services/dashboard.service";
+
 export function TodaysFocus() {
- import { getDashboardData } from "@/services/dashboard.service";
-
-const dashboard = getDashboardData();
-
-const tasks = dashboard.todaysFocus;
+  const dashboard = getDashboardData();
+  const tasks = dashboard.todaysFocus;
 
   return (
     <DashboardPanel>
