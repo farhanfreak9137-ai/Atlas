@@ -2,9 +2,10 @@
 
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 
-import { Task } from "@/types/task";
+import { Task, TaskPriority } from "@/types/task";
 import { TaskForm } from "./TaskForm";
 import { TaskItem } from "./TaskItem";
+
 
 export function TaskList() {
   const [tasks, setTasks] = useLocalStorage<Task[]>(
@@ -12,11 +13,16 @@ export function TaskList() {
   []
 );
 
-  function addTask(title: string) {
-    const newTask: Task = {
-      id: crypto.randomUUID(),
-      title,
-      completed: false,
+  function addTask(
+  title: string,
+  priority: TaskPriority
+) {
+  const newTask: Task = {
+    id: crypto.randomUUID(),
+    title,
+    completed: false,
+    priority,
+
     };
 
     setTasks((previousTasks) => [...previousTasks, newTask]);

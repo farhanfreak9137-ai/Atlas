@@ -29,6 +29,17 @@ export function TaskItem({
         >
           {task.title}
         </span>
+        <p
+  className={`text-xs font-medium ${
+    task.priority === "high"
+      ? "text-red-500"
+      : task.priority === "medium"
+      ? "text-yellow-500"
+      : "text-green-500"
+  }`}
+>
+  {task.priority.toUpperCase()}
+</p>
       </div>
 
       <button
