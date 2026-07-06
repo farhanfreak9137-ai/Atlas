@@ -1,3 +1,5 @@
+import { CalendarDays, Trash2 } from "lucide-react";
+
 import { Task } from "@/types/task";
 
 interface TaskItemProps {
@@ -11,52 +13,58 @@ export function TaskItem({
   onToggle,
   onDelete,
 }: TaskItemProps) {
- return (
-  <div className="flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-900 p-4">
-    <div className="flex items-center gap-3">
-      <input
-        type="checkbox"
-        checked={task.completed}
-        onChange={() => onToggle(task.id)}
-      />
+  const priorityColors = {
+    high: "bg-red-500/15 text-red-400 border border-red-500/20",
+    medium: "bg-yellow-500/15 text-yellow-400 border border-yellow-500/20",
+    low: "bg-green-500/15 text-green-400 border border-green-500/20",
+  };
 
-      <div>
-        <span
-          className={
-            task.completed
-              ? "line-through text-zinc-500"
-              : "text-white"
-          }
-        >
-          {task.title}
-        </span>
+  return (
+    <div className="flex items-center justify-between rounded-2xl border border-zinc-800 bg-zinc-950 p-5 transition-all duration-200 hover:border-blue-500 hover:bg-zinc-900">
+      <div className="flex items-start gap-4">
+        <input
+          type="checkbox"
+          checked={task.completed}
+          onChange={() => onToggle(task.id)}
+          className="mt-1 h-5 w-5 cursor-pointer accent-blue-600"
+        />
 
-        <p
-          className={`text-xs font-medium ${
-            task.priority === "high"
-              ? "text-red-500"
-              : task.priority === "medium"
-              ? "text-yellow-500"
-              : "text-green-500"
-          }`}
-        >
-          {task.priority.toUpperCase()}
-        </p>
+        <div className="space-y-2">
+          <h3
+            className={`text-lg font-semibold ${
+              task.completed
+                ? "text-zinc-500 line-through"
+                : "text-white"
+            }`}
+          >
+            {task.title}
+          </h3>
 
-        {task.dueDate && (
-          <p className="text-xs text-zinc-500">
-            📅 {task.dueDate}
-          </p>
-        )}
+          <div className="flex flex-wrap items-center gap-2">
+            <span
+              className={`rounded-full px-3 py-1 text-xs font-semibold uppercase ${
+                priorityColors[task.priority]
+              }`}
+            >
+              {task.priority}
+            </span>
+
+            {task.dueDate && (
+              <span className="flex items-center gap-1 rounded-full bg-zinc-800 px-3 py-1 text-xs text-zinc-400">
+                <CalendarDays size={14} />
+                {task.dueDate}
+              </span>
+            )}
+          </div>
+        </div>
       </div>
-    </div>
 
-    <button
-      onClick={() => onDelete(task.id)}
-      className="rounded-lg bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700"
-    >
-      Delete
-    </button>
-  </div>
-);
+      <button
+        onClick={() => onDelete(task.id)}
+        className="rounded-xl p-2 text-zinc-500 transition hover:bg-red-500/10 hover:text-red-500"
+      >
+        <Trash2 size={18} />
+      </button>
+    </div>
+  );
 }

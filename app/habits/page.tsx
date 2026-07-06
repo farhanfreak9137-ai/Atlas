@@ -1,6 +1,6 @@
-import { TaskList } from "@/components/tasks/TaskList";
+import { HabitList } from "@/components/habits/HabitList";
 
-export default function TasksPage() {
+export default function HabitsPage() {
   return (
     <main className="mx-auto max-w-5xl p-8">
       <div className="mb-10">
@@ -9,15 +9,15 @@ export default function TasksPage() {
         </p>
 
         <h1 className="mt-2 text-5xl font-bold">
-          Tasks
+          Habits
         </h1>
 
         <p className="mt-3 max-w-xl text-zinc-400">
-          Organize everything you need to do in one place.
+          Build small habits that create big results.
         </p>
       </div>
 
-      <TaskList />
+      <HabitList />
     </main>
   );
 }

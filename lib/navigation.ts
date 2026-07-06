@@ -39,10 +39,10 @@ export const navigation = [
     href: "/goals",
   },
   {
-    title: "Habits",
-    icon: Repeat,
-    href: "/habits",
-  },
+  title: "Habits",
+  icon: CheckSquare,
+  href: "/habits",
+},
   {
     title: "Gym",
     icon: Dumbbell,

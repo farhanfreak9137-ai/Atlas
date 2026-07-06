@@ -1,19 +1,22 @@
 "use client";
 
 import { useState } from "react";
+import { Plus } from "lucide-react";
+
 import { TaskPriority } from "@/types/task";
 
 interface TaskFormProps {
   onAdd: (
-  title: string,
-  priority: TaskPriority,
-  dueDate: string
-) => void;
+    title: string,
+    priority: TaskPriority,
+    dueDate: string
+  ) => void;
 }
 
 export function TaskForm({ onAdd }: TaskFormProps) {
   const [title, setTitle] = useState("");
-  const [priority, setPriority] = useState<TaskPriority>("medium");
+  const [priority, setPriority] =
+    useState<TaskPriority>("medium");
   const [dueDate, setDueDate] = useState("");
 
   function handleSubmit(e: React.FormEvent) {
@@ -21,7 +24,7 @@ export function TaskForm({ onAdd }: TaskFormProps) {
 
     if (!title.trim()) return;
 
-    onAdd(title, priority, dueDate);
+    onAdd(title.trim(), priority, dueDate);
 
     setTitle("");
     setPriority("medium");
@@ -29,37 +32,43 @@ export function TaskForm({ onAdd }: TaskFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-3">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col gap-4 lg:flex-row"
+    >
       <input
-        className="flex-1 rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-2"
-        placeholder="Enter a task..."
+        type="text"
+        placeholder="What needs to be done?"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
+        className="flex-1 rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 outline-none transition focus:border-blue-500"
       />
 
-<select
-  value={priority}
-  onChange={(e) =>
-    setPriority(e.target.value as TaskPriority)
-  }
-  className="rounded-lg border border-zinc-700 bg-zinc-900 px-3"
->
-  <option value="high">🔴 High</option>
-  <option value="medium">🟡 Medium</option>
-  <option value="low">🟢 Low</option>
-</select>
-<input
-  type="date"
-  value={dueDate}
-  onChange={(e) => setDueDate(e.target.value)}
-  className="rounded-lg border border-zinc-700 bg-zinc-900 px-3"
-/>
+      <select
+        value={priority}
+        onChange={(e) =>
+          setPriority(e.target.value as TaskPriority)
+        }
+        className="rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3"
+      >
+        <option value="high">🔴 High</option>
+        <option value="medium">🟡 Medium</option>
+        <option value="low">🟢 Low</option>
+      </select>
+
+      <input
+        type="date"
+        value={dueDate}
+        onChange={(e) => setDueDate(e.target.value)}
+        className="rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3"
+      />
 
       <button
-        className="rounded-lg bg-blue-600 px-5 py-2 text-white hover:bg-blue-700"
         type="submit"
+        className="flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3 font-medium text-white transition hover:bg-blue-500"
       >
-        Add
+        <Plus size={18} />
+        Add Task
       </button>
     </form>
   );

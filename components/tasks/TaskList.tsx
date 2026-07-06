@@ -1,66 +1,110 @@
 "use client";
 
-import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { useState } from "react";
 
-import { Task, TaskPriority } from "@/types/task";
+import { useTasks } from "@/hooks/useTasks";
+
 import { TaskForm } from "./TaskForm";
 import { TaskItem } from "./TaskItem";
 
-
 export function TaskList() {
-  const [tasks, setTasks] = useLocalStorage<Task[]>(
-  "atlas-tasks",
-  []
-);
+  const {
+    tasks,
+    create,
+    toggle,
+    remove,
+  } = useTasks();
 
-  function addTask(
-  title: string,
-  priority: TaskPriority,
-  dueDate: string
-) {
-  const newTask: Task = {
-    id: crypto.randomUUID(),
-    title,
-    completed: false,
-    priority,
-    dueDate,
-    };
+  const [search, setSearch] = useState("");
 
-    setTasks((previousTasks) => [...previousTasks, newTask]);
-  }
+  const [filter, setFilter] = useState<
+    "all" | "active" | "completed"
+  >("all");
 
-  function toggleTask(id: string) {
-    setTasks((previousTasks) =>
-      previousTasks.map((task) =>
-        task.id === id
-          ? { ...task, completed: !task.completed }
-          : task
-      )
-    );
-  }
+  const filteredTasks = tasks.filter((task) => {
+    const matchesSearch = task.title
+      .toLowerCase()
+      .includes(search.toLowerCase());
 
-  function deleteTask(id: string) {
-    setTasks((previousTasks) =>
-      previousTasks.filter((task) => task.id !== id)
-    );
-  }
+    const matchesFilter =
+      filter === "all"
+        ? true
+        : filter === "active"
+        ? !task.completed
+        : task.completed;
+
+    return matchesSearch && matchesFilter;
+  });
 
   return (
-    <div className="space-y-6">
-      <TaskForm onAdd={addTask} />
+    <div className="rounded-3xl border border-zinc-800 bg-zinc-900/60 p-8 shadow-xl backdrop-blur">
+      <div className="mb-8 flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold">
+            My Tasks
+          </h2>
 
-      {tasks.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-zinc-700 p-8 text-center text-zinc-500">
-          No tasks yet.
+          <p className="text-sm text-zinc-400">
+            {filteredTasks.length} Task
+            {filteredTasks.length !== 1 ? "s" : ""}
+          </p>
+        </div>
+
+        <div className="flex gap-2">
+          {["all", "active", "completed"].map((value) => (
+            <button
+              key={value}
+              onClick={() =>
+                setFilter(
+                  value as
+                    | "all"
+                    | "active"
+                    | "completed"
+                )
+              }
+              className={`rounded-xl px-4 py-2 transition ${
+                filter === value
+                  ? "bg-blue-600 text-white"
+                  : "bg-zinc-800 hover:bg-zinc-700"
+              }`}
+            >
+              {value.charAt(0).toUpperCase() +
+                value.slice(1)}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <input
+        type="text"
+        placeholder="Search tasks..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="mb-6 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 outline-none transition focus:border-blue-500"
+      />
+
+      <div className="mb-8">
+        <TaskForm onAdd={create} />
+      </div>
+
+      {filteredTasks.length === 0 ? (
+        <div className="rounded-2xl border border-dashed border-zinc-700 py-16 text-center">
+          <h3 className="text-lg font-semibold text-white">
+            No tasks found
+          </h3>
+
+          <p className="mt-2 text-zinc-500">
+            Add a new task or change your search.
+          </p>
         </div>
       ) : (
-        <div className="space-y-3">
-          {tasks.map((task) => (
+        <div className="space-y-4">
+          {filteredTasks.map((task) => (
             <TaskItem
               key={task.id}
               task={task}
-              onToggle={toggleTask}
-              onDelete={deleteTask}
+              onToggle={toggle}
+              onDelete={remove}
             />
           ))}
         </div>

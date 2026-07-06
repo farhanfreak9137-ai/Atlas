@@ -1,6 +1,6 @@
-import { TaskList } from "@/components/tasks/TaskList";
+import { GoalList } from "@/components/goals/GoalList";
 
-export default function TasksPage() {
+export default function GoalsPage() {
   return (
     <main className="mx-auto max-w-5xl p-8">
       <div className="mb-10">
@@ -9,15 +9,15 @@ export default function TasksPage() {
         </p>
 
         <h1 className="mt-2 text-5xl font-bold">
-          Tasks
+          Goals
         </h1>
 
         <p className="mt-3 max-w-xl text-zinc-400">
-          Organize everything you need to do in one place.
+          Turn long-term dreams into measurable progress.
         </p>
       </div>
 
-      <TaskList />
+      <GoalList />
     </main>
   );
 }
