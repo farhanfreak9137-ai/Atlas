@@ -1,11 +1,8 @@
 import { DashboardPanel } from "@/components/common/DashboardPanel";
+import { DashboardService } from "@/services/dashboard.service";
 
 export function TodaysFocus() {
-  const focusItems = [
-    "Complete today's tasks",
-    "Finish your daily habits",
-    "Make progress on one goal",
-  ];
+  const dashboard = DashboardService.getOverview();
 
   return (
     <DashboardPanel>
@@ -13,17 +10,53 @@ export function TodaysFocus() {
         Today`s Focus
       </h2>
 
-      <div className="mt-6 space-y-4">
-        {focusItems.map((item) => (
-          <div
-            key={item}
-            className="flex items-center gap-3"
-          >
-            <div className="h-3 w-3 rounded-full bg-blue-500" />
+      <div className="mt-6 space-y-5">
 
-            <p>{item}</p>
+        {dashboard.highestPriorityTask && (
+          <div className="rounded-xl border border-red-500/20 bg-red-500/10 p-4">
+            <p className="text-sm text-red-400">
+              HIGH PRIORITY TASK
+            </p>
+
+            <h3 className="mt-1 font-semibold">
+              {dashboard.highestPriorityTask.title}
+            </h3>
           </div>
-        ))}
+        )}
+
+        {dashboard.longestHabitStreak && (
+          <div className="rounded-xl border border-green-500/20 bg-green-500/10 p-4">
+            <p className="text-sm text-green-400">
+              BEST HABIT STREAK
+            </p>
+
+            <h3 className="mt-1 font-semibold">
+              {dashboard.longestHabitStreak.icon}{" "}
+              {dashboard.longestHabitStreak.title}
+            </h3>
+
+            <p className="mt-1 text-sm text-zinc-400">
+              🔥 {dashboard.longestHabitStreak.streak} day streak
+            </p>
+          </div>
+        )}
+
+        {dashboard.nearestGoalDeadline && (
+          <div className="rounded-xl border border-blue-500/20 bg-blue-500/10 p-4">
+            <p className="text-sm text-blue-400">
+              NEAREST GOAL
+            </p>
+
+            <h3 className="mt-1 font-semibold">
+              {dashboard.nearestGoalDeadline.title}
+            </h3>
+
+            <p className="mt-1 text-sm text-zinc-400">
+              📅 {dashboard.nearestGoalDeadline.deadline}
+            </p>
+          </div>
+        )}
+
       </div>
     </DashboardPanel>
   );

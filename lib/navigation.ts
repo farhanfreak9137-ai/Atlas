@@ -5,6 +5,7 @@ import {
   Target,
   CheckSquare,
   Repeat,
+  Calendar,
   Dumbbell,
   Trophy,
   GraduationCap,
@@ -18,6 +19,11 @@ export const navigation = [
     icon: LayoutDashboard,
     href: "/",
   },
+  {
+  title: "Calendar",
+  icon: Calendar,
+  href: "/calendar",
+},
   {
     title: "Tasks",
     icon: CheckSquare,
@@ -39,9 +45,11 @@ export const navigation = [
     href: "/goals",
   },
   {
+
   title: "Habits",
-  icon: CheckSquare,
+  icon: Repeat,
   href: "/habits",
+
 },
   {
     title: "Gym",

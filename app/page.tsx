@@ -7,6 +7,7 @@ import { TodaysFocus } from "@/components/dashboard/TodaysFocus";
 import { AIInsightCard } from "@/components/dashboard/AIInsightCard";
 
 import { DashboardService } from "@/services/dashboard.service";
+import { ActivityFeed } from "@/components/dashboard/ActivityFeed";
 
 export default function Home() {
   const dashboard =
@@ -29,11 +30,13 @@ export default function Home() {
           </div>
         </DashboardGrid>
 
-        <AIInsightCard
+        <AIInsightCard />
+
+<ActivityFeed />
           productivity={
             dashboard.productivity
           }
-        />
+        
       </div>
     </AppShell>
   );
