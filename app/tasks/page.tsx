@@ -1,21 +1,14 @@
 import { TaskList } from "@/components/tasks/TaskList";
+import { PageHeader } from "@/components/common/PageHeader";
 
 export default function TasksPage() {
   return (
-    <main className="mx-auto max-w-5xl p-8">
-      <div className="mb-10">
-        <p className="text-sm uppercase tracking-[0.25em] text-blue-500">
-          Productivity
-        </p>
-
-        <h1 className="mt-2 text-5xl font-bold">
-          Tasks
-        </h1>
-
-        <p className="mt-3 max-w-xl text-zinc-400">
-          Organize everything you need to do in one place.
-        </p>
-      </div>
+    <main className="mx-auto max-w-7xl p-8">
+      <PageHeader
+        eyebrow="Productivity"
+        title="Tasks"
+        description="Organize everything you need to do in one place."
+      />
 
       <TaskList />
     </main>

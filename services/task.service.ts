@@ -9,9 +9,11 @@ export class TaskService {
   static create(
     title: string,
     priority: TaskPriority,
-    dueDate: string
-  ) {
+    dueDate?: string
+  ): Task {
     const tasks = taskRepository.getAll();
+
+    const now = new Date().toISOString();
 
     const newTask: Task = {
       id: crypto.randomUUID(),
@@ -19,23 +21,23 @@ export class TaskService {
       completed: false,
       priority,
       dueDate,
+      createdAt: now,
+      updatedAt: now,
     };
 
     tasks.push(newTask);
-
     taskRepository.save(tasks);
 
     return newTask;
   }
 
-  static toggle(id: string) {
-    const tasks = taskRepository.getAll();
-
-    const updated = tasks.map((task) =>
+  static toggle(id: string): void {
+    const updated = taskRepository.getAll().map((task) =>
       task.id === id
         ? {
             ...task,
             completed: !task.completed,
+            updatedAt: new Date().toISOString(),
           }
         : task
     );
@@ -43,7 +45,7 @@ export class TaskService {
     taskRepository.save(updated);
   }
 
-  static delete(id: string) {
+  static delete(id: string): void {
     const updated = taskRepository
       .getAll()
       .filter((task) => task.id !== id);
@@ -51,25 +53,24 @@ export class TaskService {
     taskRepository.save(updated);
   }
 
-  static search(query: string) {
+  static search(query: string): Task[] {
     return taskRepository
       .getAll()
       .filter((task) =>
-        task.title
-          .toLowerCase()
-          .includes(query.toLowerCase())
+        task.title.toLowerCase().includes(query.toLowerCase())
       );
   }
 
-  static getStatistics() {
+  static getStatistics(): {
+    total: number;
+    completed: number;
+    active: number;
+    completionRate: number;
+  } {
     const tasks = taskRepository.getAll();
 
     const total = tasks.length;
-
-    const completed = tasks.filter(
-      (t) => t.completed
-    ).length;
-
+    const completed = tasks.filter((task) => task.completed).length;
     const active = total - completed;
 
     return {
@@ -77,11 +78,7 @@ export class TaskService {
       completed,
       active,
       completionRate:
-        total === 0
-          ? 0
-          : Math.round(
-              (completed / total) * 100
-            ),
+        total === 0 ? 0 : Math.round((completed / total) * 100),
     };
   }
 }

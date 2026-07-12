@@ -1,29 +1,60 @@
 import { ReactNode } from "react";
+import { GlassCard } from "@/components/ui/GlassCard";
+import { cn } from "@/lib/cn";
 
 interface InfoCardProps {
   title: string;
   value: string;
   icon: ReactNode;
+  className?: string;
 }
 
 export function InfoCard({
   title,
   value,
   icon,
+  className,
 }: InfoCardProps) {
   return (
-    <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/40">
-      <div className="mb-4 text-zinc-400">
-        {icon}
+    <GlassCard
+      className={cn(
+        "group cursor-pointer overflow-hidden",
+        className
+      )}
+    >
+      <div className="flex items-start justify-between">
+
+        <div className="space-y-3">
+
+          <p className="text-sm font-medium text-zinc-400">
+            {title}
+          </p>
+
+          <h3 className="text-3xl font-bold tracking-tight text-white">
+            {value}
+          </h3>
+
+        </div>
+
+        <div
+          className="
+            flex h-14 w-14 items-center justify-center
+            rounded-2xl
+            bg-blue-500/10
+            text-blue-400
+
+            transition-all
+            duration-300
+
+            group-hover:scale-110
+            group-hover:bg-blue-500/20
+            group-hover:text-blue-300
+          "
+        >
+          {icon}
+        </div>
+
       </div>
-
-      <h3 className="text-sm text-zinc-500">
-        {title}
-      </h3>
-
-      <p className="mt-2 text-xl font-semibold text-white">
-        {value}
-      </p>
-    </div>
+    </GlassCard>
   );
 }

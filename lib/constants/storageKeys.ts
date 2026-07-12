@@ -4,4 +4,6 @@ export const STORAGE_KEYS = {
   GOALS: "atlas-goals",
   JOURNAL: "atlas-journal",
   SETTINGS: "atlas-settings",
+  NOTES: "atlas_notes",
+  REMINDERS: "atlas_reminders",
 } as const;

@@ -7,11 +7,11 @@ export class BaseRepository<T> {
     return Storage.get<T[]>(this.key) ?? [];
   }
 
-  save(items: T[]) {
+  save(items: T[]): void {
     Storage.set(this.key, items);
   }
 
- clear() {
+  clear(): void {
     Storage.remove(this.key);
   }
 }

@@ -1,6 +1,8 @@
 "use client";
 
-import { useGoals } from "@/hooks/useGoals";
+import { useEffect } from "react";
+
+import { useGoalStore } from "@/stores/goal.store";
 
 import { GoalForm } from "./GoalForm";
 import { GoalItem } from "./GoalItem";
@@ -8,10 +10,15 @@ import { GoalItem } from "./GoalItem";
 export function GoalList() {
   const {
     goals,
+    load,
     create,
     updateProgress,
     remove,
-  } = useGoals();
+  } = useGoalStore();
+
+  useEffect(() => {
+    load();
+  }, [load]);
 
   return (
     <div className="space-y-8">

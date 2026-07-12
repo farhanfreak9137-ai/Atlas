@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import { useTasks } from "@/hooks/useTasks";
+import { useTaskStore } from "@/stores/task.store";
 
 import { TaskForm } from "./TaskForm";
 import { TaskItem } from "./TaskItem";
@@ -10,10 +10,15 @@ import { TaskItem } from "./TaskItem";
 export function TaskList() {
   const {
     tasks,
-    create,
-    toggle,
-    remove,
-  } = useTasks();
+    load,
+    createTask,
+    toggleTask,
+    deleteTask,
+  } = useTaskStore();
+
+  useEffect(() => {
+    load();
+  }, [load]);
 
   const [search, setSearch] = useState("");
 
@@ -84,7 +89,7 @@ export function TaskList() {
       />
 
       <div className="mb-8">
-        <TaskForm onAdd={create} />
+        <TaskForm onAdd={createTask} />
       </div>
 
       {filteredTasks.length === 0 ? (
@@ -103,8 +108,8 @@ export function TaskList() {
             <TaskItem
               key={task.id}
               task={task}
-              onToggle={toggle}
-              onDelete={remove}
+              onToggle={toggleTask}
+              onDelete={deleteTask}
             />
           ))}
         </div>

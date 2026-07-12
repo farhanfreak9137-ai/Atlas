@@ -1,9 +1,17 @@
+"use client";
+
 import { DashboardPanel } from "@/components/common/DashboardPanel";
 import { DashboardService } from "@/services/dashboard.service";
 
-export function TodaysFocus() {
-  const dashboard = DashboardService.getOverview();
+interface TodaysFocusProps {
+  dashboard: ReturnType<
+    typeof DashboardService.getOverview
+  >;
+}
 
+export function TodaysFocus({
+  dashboard,
+}: TodaysFocusProps) {
   return (
     <DashboardPanel>
       <h2 className="text-xl font-semibold">
@@ -11,7 +19,6 @@ export function TodaysFocus() {
       </h2>
 
       <div className="mt-6 space-y-5">
-
         {dashboard.highestPriorityTask && (
           <div className="rounded-xl border border-red-500/20 bg-red-500/10 p-4">
             <p className="text-sm text-red-400">
@@ -56,7 +63,6 @@ export function TodaysFocus() {
             </p>
           </div>
         )}
-
       </div>
     </DashboardPanel>
   );

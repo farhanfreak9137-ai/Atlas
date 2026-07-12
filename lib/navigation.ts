@@ -1,7 +1,6 @@
 import {
   LayoutDashboard,
   Brain,
-  BookOpen,
   Target,
   CheckSquare,
   Repeat,
@@ -11,69 +10,68 @@ import {
   GraduationCap,
   FolderKanban,
   Settings,
+  NotebookPen,
 } from "lucide-react";
 
 export const navigation = [
   {
     title: "Dashboard",
-    icon: LayoutDashboard,
     href: "/",
+    icon: LayoutDashboard,
   },
   {
-  title: "Calendar",
-  icon: Calendar,
-  href: "/calendar",
-},
+    title: "Calendar",
+    href: "/calendar",
+    icon: Calendar,
+  },
   {
     title: "Tasks",
-    icon: CheckSquare,
     href: "/tasks",
+    icon: CheckSquare,
   },
   {
     title: "AI",
-    icon: Brain,
     href: "/ai",
+    icon: Brain,
   },
   {
-    title: "Journal",
-    icon: BookOpen,
-    href: "/journal",
+    title: "Notes",
+    href: "/notes",
+    icon: NotebookPen,
   },
   {
     title: "Goals",
-    icon: Target,
     href: "/goals",
+    icon: Target,
   },
   {
-
-  title: "Habits",
-  icon: Repeat,
-  href: "/habits",
-
-},
+    title: "Habits",
+    href: "/habits",
+    icon: Repeat,
+  },
   {
     title: "Gym",
-    icon: Dumbbell,
     href: "/gym",
+    icon: Dumbbell,
   },
   {
     title: "Football",
-    icon: Trophy,
     href: "/football",
+    icon: Trophy,
   },
   {
     title: "Study",
-    icon: GraduationCap,
     href: "/study",
+    icon: GraduationCap,
   },
   {
     title: "Projects",
-    icon: FolderKanban,
     href: "/projects",
+    icon: FolderKanban,
   },
   {
     title: "Settings",
-    icon: Settings,
     href: "/settings",
+    icon: Settings,
   },
 ];

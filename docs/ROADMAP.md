@@ -1,16 +1,16 @@
 # Atlas Roadmap
 
 ## Milestone 1
-- [ ] Sidebar
-- [ ] Navbar
-- [ ] Dashboard Shell
-- [ ] Responsive Layout
+- [ ] Sidebar - Done
+- [ ] Navbar-Done
+- [ ] Dashboard Shell-Done
+- [ ] Responsive Layout-Done
 
 ## Milestone 2
-- [ ] Dashboard Cards
-- [ ] Journal
-- [ ] Goals
-- [ ] Habits
+- [ ] Dashboard Cards-Done
+- [ ] Journal-
+- [ ] Goals-Done
+- [ ] Habits-Done
 
 ## Milestone 3
 - [ ] SQLite

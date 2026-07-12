@@ -1,8 +1,7 @@
 "use client";
 
 import { InfoCard } from "@/components/common/InfoCard";
-import { useDashboard } from "@/hooks/useDashboard";
-
+import { SectionHeader } from "@/components/ui/SectionHeader";
 import {
   CheckSquare,
   Droplets,
@@ -10,14 +9,23 @@ import {
   FolderKanban,
 } from "lucide-react";
 
-export function QuickStatsSection() {
-  const dashboard = useDashboard();
+import { DashboardService } from "@/services/dashboard.service";
 
+interface QuickStatsSectionProps {
+  dashboard: ReturnType<
+    typeof DashboardService.getOverview
+  >;
+}
+
+export function QuickStatsSection({
+  dashboard,
+}: QuickStatsSectionProps) {
   return (
     <section>
-      <h2 className="mb-5 text-lg font-semibold">
-        Today at a Glance
-      </h2>
+      <SectionHeader
+        title="Today's Overview"
+        subtitle="A quick snapshot of your progress."
+      />
 
       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
         <InfoCard

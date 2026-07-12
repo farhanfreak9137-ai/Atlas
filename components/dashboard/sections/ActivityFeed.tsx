@@ -1,32 +1,49 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
-import { useTasks } from "@/hooks/useTasks";
-import { useHabits } from "@/hooks/useHabits";
-import { useGoals } from "@/hooks/useGoals";
+import { useTaskStore } from "@/stores/task.store";
+import { useHabitStore } from "@/stores/habit.store";
+import { useGoalStore } from "@/stores/goal.store";
 
 export function ActivityFeed() {
-  const { tasks } = useTasks();
-  const { habits } = useHabits();
-  const { goals } = useGoals();
+  const {
+    tasks,
+    load: loadTasks,
+  } = useTaskStore();
+
+  const {
+    habits,
+    load: loadHabits,
+  } = useHabitStore();
+
+  const {
+    goals,
+    load: loadGoals,
+  } = useGoalStore();
+
+  useEffect(() => {
+    loadTasks();
+    loadHabits();
+    loadGoals();
+  }, [loadTasks, loadHabits, loadGoals]);
 
   const activities = useMemo(() => {
     return [
       ...tasks.map((task) => ({
-        id: task.id,
+        id: `task-${task.id}`,
         title: `📝 ${task.title}`,
         type: "task",
       })),
 
       ...habits.map((habit) => ({
-        id: habit.id,
+        id: `habit-${habit.id}`,
         title: `🔥 ${habit.title}`,
         type: "habit",
       })),
 
       ...goals.map((goal) => ({
-        id: goal.id,
+        id: `goal-${goal.id}`,
         title: `🎯 ${goal.title}`,
         type: "goal",
       })),

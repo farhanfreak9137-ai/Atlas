@@ -1,6 +1,8 @@
 "use client";
 
-import { useHabits } from "@/hooks/useHabits";
+import { useEffect } from "react";
+
+import { useHabitStore } from "@/stores/habit.store";
 
 import { HabitForm } from "./HabitForm";
 import { HabitItem } from "./HabitItem";
@@ -8,10 +10,15 @@ import { HabitItem } from "./HabitItem";
 export function HabitList() {
   const {
     habits,
+    load,
     create,
     toggle,
     remove,
-  } = useHabits();
+  } = useHabitStore();
+
+  useEffect(() => {
+    load();
+  }, [load]);
 
   return (
     <div className="space-y-8">

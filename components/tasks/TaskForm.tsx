@@ -5,6 +5,9 @@ import { Plus } from "lucide-react";
 
 import { TaskPriority } from "@/types/task";
 
+import { GlassButton } from "@/components/ui/GlassButton";
+import { GlassInput } from "@/components/ui/GlassInput";
+
 interface TaskFormProps {
   onAdd: (
     title: string,
@@ -13,18 +16,26 @@ interface TaskFormProps {
   ) => void;
 }
 
-export function TaskForm({ onAdd }: TaskFormProps) {
+export function TaskForm({
+  onAdd,
+}: TaskFormProps) {
   const [title, setTitle] = useState("");
   const [priority, setPriority] =
     useState<TaskPriority>("medium");
   const [dueDate, setDueDate] = useState("");
 
-  function handleSubmit(e: React.FormEvent) {
+  function handleSubmit(
+    e: React.FormEvent
+  ) {
     e.preventDefault();
 
     if (!title.trim()) return;
 
-    onAdd(title.trim(), priority, dueDate);
+    onAdd(
+      title.trim(),
+      priority,
+      dueDate
+    );
 
     setTitle("");
     setPriority("medium");
@@ -36,40 +47,66 @@ export function TaskForm({ onAdd }: TaskFormProps) {
       onSubmit={handleSubmit}
       className="flex flex-col gap-4 lg:flex-row"
     >
-      <input
+      <GlassInput
         type="text"
         placeholder="What needs to be done?"
         value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        className="flex-1 rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 outline-none transition focus:border-blue-500"
+        onChange={(e) =>
+          setTitle(e.target.value)
+        }
       />
 
       <select
         value={priority}
         onChange={(e) =>
-          setPriority(e.target.value as TaskPriority)
+          setPriority(
+            e.target.value as TaskPriority
+          )
         }
-        className="rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3"
+        className="
+          rounded-2xl
+          border
+          border-[var(--border)]
+          bg-[var(--glass)]
+          px-4
+          py-3
+          text-[var(--text)]
+          backdrop-blur-xl
+          outline-none
+          transition-all
+          duration-200
+          focus:border-[var(--primary)]
+        "
       >
-        <option value="high">🔴 High</option>
-        <option value="medium">🟡 Medium</option>
-        <option value="low">🟢 Low</option>
+        <option value="high">
+          🔴 High
+        </option>
+
+        <option value="medium">
+          🟡 Medium
+        </option>
+
+        <option value="low">
+          🟢 Low
+        </option>
       </select>
 
-      <input
+      <GlassInput
         type="date"
         value={dueDate}
-        onChange={(e) => setDueDate(e.target.value)}
-        className="rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3"
+        onChange={(e) =>
+          setDueDate(e.target.value)
+        }
+        className="w-auto"
       />
 
-      <button
+      <GlassButton
         type="submit"
-        className="flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3 font-medium text-white transition hover:bg-blue-500"
+        className="flex items-center justify-center gap-2"
       >
         <Plus size={18} />
         Add Task
-      </button>
+      </GlassButton>
     </form>
   );
 }

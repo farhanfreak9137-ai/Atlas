@@ -8,32 +8,32 @@ import { TaskService } from "@/services/task.service";
 export function useTasks() {
   const [tasks, setTasks] = useState<Task[]>([]);
 
-  function refresh() {
+  const refresh = (): void => {
     setTasks(TaskService.getAll());
-  }
+  };
 
   useEffect(() => {
     refresh();
   }, []);
 
-  function create(
+  const create = (
     title: string,
     priority: TaskPriority,
-    dueDate: string
-  ) {
+    dueDate?: string
+  ): void => {
     TaskService.create(title, priority, dueDate);
     refresh();
-  }
+  };
 
-  function toggle(id: string) {
+  const toggle = (id: string): void => {
     TaskService.toggle(id);
     refresh();
-  }
+  };
 
-  function remove(id: string) {
+  const remove = (id: string): void => {
     TaskService.delete(id);
     refresh();
-  }
+  };
 
   return {
     tasks,

@@ -1,43 +1,42 @@
-import { AppShell } from "@/components/layout/AppShell";
+"use client";
 
-import { GreetingCard } from "@/components/dashboard/GreetingCard";
-import { QuickStatsSection } from "@/components/dashboard/QuickStatsSection";
-import { DashboardGrid } from "@/components/dashboard/DashboardGrid";
+import { GreetingCard } from "@/components/dashboard/cards/GreetingCard";
+import { QuickStatsSection } from "@/components/dashboard/sections/QuickStatsSection";
+import { DashboardGrid } from "@/components/dashboard/sections/DashboardGrid";
 import { TodaysFocus } from "@/components/dashboard/TodaysFocus";
-import { AIInsightCard } from "@/components/dashboard/AIInsightCard";
+import { AIInsightCard } from "@/components/dashboard/cards/AIInsightCard";
+import { ActivityFeed } from "@/components/dashboard/sections/ActivityFeed";
 
-import { DashboardService } from "@/services/dashboard.service";
-import { ActivityFeed } from "@/components/dashboard/ActivityFeed";
+import { useDashboard } from "@/hooks/useDashboard";
 
 export default function Home() {
-  const dashboard =
-    DashboardService.getOverview();
+  const dashboard = useDashboard();
 
-  return (
-    <AppShell>
+  if (!dashboard) {
+    return (
       <div className="space-y-8">
         <GreetingCard />
-
-        <DashboardGrid>
-          <div className="xl:col-span-8">
-            <QuickStatsSection
-              stats={dashboard}
-            />
-          </div>
-
-          <div className="xl:col-span-4">
-            <TodaysFocus />
-          </div>
-        </DashboardGrid>
-
-        <AIInsightCard />
-
-<ActivityFeed />
-          productivity={
-            dashboard.productivity
-          }
-        
       </div>
-    </AppShell>
+    );
+  }
+
+  return (
+    <div className="space-y-8">
+      <GreetingCard />
+
+      <DashboardGrid>
+        <div className="xl:col-span-8">
+          <QuickStatsSection dashboard={dashboard} />
+        </div>
+
+        <div className="xl:col-span-4">
+          <TodaysFocus dashboard={dashboard} />
+        </div>
+      </DashboardGrid>
+
+      <AIInsightCard />
+
+      <ActivityFeed />
+    </div>
   );
 }
