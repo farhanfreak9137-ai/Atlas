@@ -40,15 +40,15 @@ export function InfoCard({
           className="
             flex h-14 w-14 items-center justify-center
             rounded-2xl
-            bg-blue-500/10
-            text-blue-400
+            bg-[#1F7A5B]/10
+            text-[#1F7A5B]
 
             transition-all
             duration-300
 
             group-hover:scale-110
-            group-hover:bg-blue-500/20
-            group-hover:text-blue-300
+            group-hover:bg-[#1F7A5B]/20
+            group-hover:text-[#2A8F66]
           "
         >
           {icon}

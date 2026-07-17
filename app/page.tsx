@@ -10,7 +10,23 @@ import { ActivityFeed } from "@/components/dashboard/sections/ActivityFeed";
 import { useDashboard } from "@/hooks/useDashboard";
 
 export default function Home() {
-  const dashboard = useDashboard();
+  const { dashboard, isLoading, isError } = useDashboard();
+
+  if (isLoading) {
+    return (
+      <div className="space-y-8 p-4 text-center">
+        <p>Loading dashboard...</p>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="space-y-8 p-4 text-center text-red-500">
+        <p>Error loading dashboard. Please try again later.</p>
+      </div>
+    );
+  }
 
   if (!dashboard) {
     return (

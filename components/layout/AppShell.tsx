@@ -26,7 +26,7 @@ export function AppShell({
             h-[700px]
             w-[700px]
             rounded-full
-            bg-blue-500/20
+            bg-[#1F7A5B]/20
             blur-[180px]
         "
         />

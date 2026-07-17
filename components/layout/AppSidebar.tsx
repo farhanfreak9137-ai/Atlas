@@ -45,7 +45,7 @@ export function AppSidebar() {
             h-40
 
             bg-gradient-to-b
-            from-blue-500/15
+            from-[#1F7A5B]/15
             to-transparent
 
             pointer-events-none
@@ -69,14 +69,14 @@ export function AppSidebar() {
                 rounded-2xl
 
                 bg-gradient-to-br
-                from-blue-500
-                to-cyan-400
+                from-[#1F7A5B]
+                to-[#2A8F66]
 
                 text-xl
                 font-bold
 
                 shadow-lg
-                shadow-blue-500/30
+                shadow-[0_20px_60px_rgba(31,122,91,.25)]
               "
             >
               A
@@ -134,14 +134,14 @@ export function AppSidebar() {
                   ${
                     active
                       ? `
-                        bg-blue-500/15
+                        bg-[#1F7A5B]/15
                         text-white
 
                         border
-                        border-blue-400/20
+                        border-[#1F7A5B]/20
 
                         shadow-lg
-                        shadow-blue-500/10
+                        shadow-[0_10px_40px_rgba(31,122,91,.10)]
                       `
                       : `
                         text-zinc-400
@@ -208,8 +208,8 @@ export function AppSidebar() {
                   rounded-full
 
                   bg-gradient-to-r
-                  from-blue-500
-                  to-cyan-400
+                  from-[#1F7A5B]
+                  to-[#2A8F66]
                 "
               />
 

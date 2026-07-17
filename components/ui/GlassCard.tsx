@@ -22,8 +22,8 @@ export function GlassCard({
         p-6
 
         hover:-translate-y-1
-        hover:border-blue-500/30
-        hover:shadow-[0_0_40px_rgba(59,130,246,.12)]
+        hover:border-[#1F7A5B]/30
+        hover:shadow-[0_0_40px_rgba(31,122,91,.12)]
         `,
         className
       )}

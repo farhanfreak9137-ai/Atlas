@@ -69,7 +69,7 @@ export function AppNavbar() {
 
             transition-all
 
-            hover:border-blue-500/20
+            hover:border-[#1F7A5B]/20
             hover:bg-white/5
           "
         >
@@ -154,8 +154,8 @@ export function AppNavbar() {
                 rounded-full
 
                 bg-gradient-to-br
-                from-blue-500
-                to-cyan-400
+                from-[#1F7A5B]
+                to-[#2A8F66]
 
                 font-bold
               "

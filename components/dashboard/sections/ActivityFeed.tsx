@@ -51,21 +51,21 @@ export function ActivityFeed() {
   }, [tasks, habits, goals]);
 
   return (
-    <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-6">
-      <h2 className="mb-5 text-xl font-semibold">
+    <div className="rounded-2xl border border-accent/60 bg-accent/10 p-6">
+      <h2 className="mb-5 text-xl font-semibold text-accent">
         Recent Activity
       </h2>
 
       <div className="space-y-3">
         {activities.length === 0 ? (
-          <p className="text-zinc-500">
+          <p className="text-accent">
             Nothing yet.
           </p>
         ) : (
           activities.map((activity) => (
             <div
               key={activity.id}
-              className="rounded-xl bg-zinc-800 p-3"
+              className="rounded-xl bg-accent/20 p-3"
             >
               {activity.title}
             </div>

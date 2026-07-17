@@ -31,25 +31,33 @@ export function QuickStatsSection({
         <InfoCard
           title="Tasks"
           value={`${dashboard.tasks.active} Active`}
-          icon={<CheckSquare size={24} />}
+          icon={<CheckSquare size={24} color="#34C759" />}
+          valueColor="text-primary"
+          iconBgColor="bg-primary/10"
         />
 
         <InfoCard
           title="Habits"
           value={`${dashboard.habits.completed} / ${dashboard.habits.total}`}
-          icon={<Droplets size={24} />}
+          icon={<Droplets size={24} color="#34C759" />}
+          valueColor="text-primary"
+          iconBgColor="bg-primary/10"
         />
 
         <InfoCard
           title="Goals"
           value={`${dashboard.goals.active} Active`}
-          icon={<FolderKanban size={24} />}
+          icon={<FolderKanban size={24} color="#34C759" />}
+          valueColor="text-primary"
+          iconBgColor="bg-primary/10"
         />
 
         <InfoCard
           title="Productivity"
           value={`${dashboard.productivity}%`}
-          icon={<Dumbbell size={24} />}
+          icon={<Dumbbell size={24} color="#34C759" />}
+          valueColor="text-primary"
+          iconBgColor="bg-primary/10"
         />
       </div>
     </section>

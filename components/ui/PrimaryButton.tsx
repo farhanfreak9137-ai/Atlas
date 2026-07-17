@@ -14,7 +14,7 @@ export function PrimaryButton({
       className={cn(
         `
         rounded-2xl
-        bg-blue-600
+        bg-[#1F7A5B]
         px-5
         py-3
 
@@ -25,7 +25,7 @@ export function PrimaryButton({
         duration-300
 
         hover:scale-[1.02]
-        hover:bg-blue-500
+        hover:bg-[#2A8F66]
 
         active:scale-[0.98]
         `,
