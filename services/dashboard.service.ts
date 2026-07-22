@@ -66,3 +66,7 @@ export class DashboardService {
     };
   }
 }
+
+export function getDashboardData() {
+  return DashboardService.getOverview();
+}

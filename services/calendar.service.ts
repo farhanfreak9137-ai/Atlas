@@ -7,11 +7,11 @@ import { GoalService } from "./goal.service";
 export class CalendarService {
   static getEvents(): CalendarEvent[] {
     const taskEvents = TaskService.getAll()
-      .filter((task) => task.dueDate)
+      .filter((task) => !!task.dueDate)
       .map((task) => ({
         id: task.id,
         title: task.title,
-        date: task.dueDate,
+        date: task.dueDate as string,
         type: "task" as const,
       }));
 

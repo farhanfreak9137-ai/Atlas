@@ -11,7 +11,8 @@ interface HabitStore {
   create: (
     title: string,
     icon: string,
-    frequency: "daily" | "weekly"
+    color: string,
+    target: number
   ) => void;
 
   toggle: (id: string) => void;
@@ -28,8 +29,8 @@ export const useHabitStore = create<HabitStore>((set) => ({
     });
   },
 
-  create: (title, icon, frequency) => {
-    HabitService.create(title, icon, frequency);
+  create: (title, icon, color, target) => {
+    HabitService.create(title, icon, color, target);
 
     set({
       habits: HabitService.getAll(),
@@ -45,7 +46,7 @@ export const useHabitStore = create<HabitStore>((set) => ({
   },
 
   remove: (id) => {
-    HabitService.remove(id);
+    HabitService.delete(id);
 
     set({
       habits: HabitService.getAll(),
