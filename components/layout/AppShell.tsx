@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { AppSidebar } from "./AppSidebar";
 import { AppNavbar } from "./AppNavbar";
+import { SearchPanel } from "@/components/common/SearchPanel";
 
 interface AppShellProps {
   children: ReactNode;
@@ -102,6 +103,9 @@ export function AppShell({
         </div>
 
       </div>
+
+      {/* Global: Search panel mounted here */}
+      <SearchPanel />
 
     </div>
   );
