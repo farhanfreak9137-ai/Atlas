@@ -12,9 +12,16 @@ interface ChatContainerProps {
 
 export function ChatContainer({ messages, isLoading }: ChatContainerProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = (): void => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    const container = containerRef.current as HTMLDivElement | null;
+    if (container) {
+      // scroll the chat container itself to avoid scrolling the main page/navbar
+      container.scrollTo({ top: container.scrollHeight, behavior: "smooth" });
+    } else {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   useEffect(() => {
@@ -22,7 +29,7 @@ export function ChatContainer({ messages, isLoading }: ChatContainerProps) {
   }, [messages, isLoading]);
 
   return (
-    <div className="flex flex-col gap-6 flex-1 overflow-y-auto pb-6">
+    <div ref={containerRef} className="flex flex-col gap-6 flex-1 overflow-y-auto pb-6">
       {messages.length === 0 ? (
         <ChatEmpty />
       ) : (
