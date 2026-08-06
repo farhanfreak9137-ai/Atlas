@@ -19,6 +19,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Atlas",
   description: "Personal AI Operating System",
+  viewport: "width=device-width, initial-scale=1",
 };
 
 export default function RootLayout({

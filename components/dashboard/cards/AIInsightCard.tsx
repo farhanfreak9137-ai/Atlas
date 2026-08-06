@@ -1,4 +1,4 @@
-import { DashboardPanel } from "@/components/common/DashboardPanel";
+import { DashboardPanel } from "@/components/dashboard/DashboardPanel";
 
 export function AIInsightCard() {
   return (

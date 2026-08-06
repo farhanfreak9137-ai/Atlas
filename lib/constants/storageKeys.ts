@@ -6,4 +6,11 @@ export const STORAGE_KEYS = {
   SETTINGS: "atlas-settings",
   NOTES: "atlas_notes",
   REMINDERS: "atlas_reminders",
+  GYM_WORKOUTS: "atlas_gym_workouts",
+  GYM_EXERCISES: "atlas_gym_exercises",
+  FOOTBALL_MATCHES: "atlas_football_matches",
+  FOOTBALL_TRAINING: "atlas_football_training",
+  STUDY_SUBJECTS: "atlas_study_subjects",
+  STUDY_SESSIONS: "atlas_study_sessions",
+  STUDY_GRADES: "atlas_study_grades",
 } as const;

@@ -1,6 +1,6 @@
 "use client";
 
-import { DashboardPanel } from "@/components/common/DashboardPanel";
+import { DashboardPanel } from "@/components/dashboard/DashboardPanel";
 import { DashboardService } from "@/services/dashboard.service";
 
 interface TodaysFocusProps {

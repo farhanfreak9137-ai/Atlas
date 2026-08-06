@@ -1,17 +1,10 @@
-import { DashboardPanel } from "@/components/common/DashboardPanel";
-import { Skeleton } from "@/components/ui/Skeleton";
+import { DashboardPanel } from '@/components/dashboard/DashboardPanel';
+import { AIInsightCard } from './AIInsightCard';
 
-export function AIInsightCardSkeleton() {
+export function AIInsightCardSkeleton() {  // Now using real implementation
   return (
     <DashboardPanel>
-      <div className="space-y-4">
-        <div>
-          <Skeleton className="h-4 w-1/4 mb-2" />
-          <Skeleton className="h-8 w-3/4" />
-        </div>
-
-        <Skeleton className="h-16 w-full" />
-      </div>
+      <AIInsightCard/>
     </DashboardPanel>
   );
 }

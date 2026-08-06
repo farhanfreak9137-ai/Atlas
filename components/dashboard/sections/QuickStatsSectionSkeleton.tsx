@@ -1,30 +1,25 @@
-"use client";
-
-
-import { SectionHeader } from "@/components/ui/SectionHeader";
-import { Skeleton } from "@/components/ui/Skeleton"; // Assuming a Skeleton component exists or will be created
+import { DashboardPanel } from '@/components/dashboard/DashboardPanel';
 
 export function QuickStatsSectionSkeleton() {
   return (
-    <section>
-      <SectionHeader
-        title="Today's Overview"
-        subtitle="A quick snapshot of your progress."
-      />
+    <DashboardPanel>
+      <div className="space-y-6">
+        {/* Section Header Skeleton */}
+        <div className="space-y-2">
+          <div className="h-7 w-48 rounded bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
+          <div className="h-4 w-64 rounded bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
+        </div>
 
-      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-        {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="rounded-lg border bg-card p-6 shadow-sm">
-            <div className="flex items-center space-x-4">
-              <Skeleton className="h-12 w-12 rounded-full" />
-              <div className="space-y-2">
-                <Skeleton className="h-4 w-[100px]" />
-                <Skeleton className="h-4 w-[150px]" />
-              </div>
+        {/* Stats Grid Skeleton */}
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-6">
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="space-y-2 p-4 rounded-lg bg-gray-100 dark:bg-gray-800 animate-pulse">
+              <div className="h-4 w-20 rounded bg-gray-200 dark:bg-gray-700"></div>
+              <div className="h-6 w-24 rounded bg-gray-200 dark:bg-gray-700"></div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </section>
+    </DashboardPanel>
   );
 }

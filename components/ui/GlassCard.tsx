@@ -19,7 +19,7 @@ export function GlassCard({
         rounded-[28px]
         border
         border-white/10
-        p-6
+        p-4 sm:p-6
 
         hover:-translate-y-1
         hover:border-[#1F7A5B]/30

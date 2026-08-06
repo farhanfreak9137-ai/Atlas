@@ -1,6 +1,8 @@
 import { TaskService } from "./task.service";
 import { HabitService } from "./habit.service";
 import { GoalService } from "./goal.service";
+import { GymService } from "./gym.service";
+import { FootballService } from "./football.service";
 
 export class DashboardService {
   static getOverview() {
@@ -11,6 +13,9 @@ export class DashboardService {
     const allTasks = TaskService.getAll();
     const allHabits = HabitService.getAll();
     const allGoals = GoalService.getAll();
+
+    const gymStats = GymService.getStats();
+    const footballStats = FootballService.getStats();
 
     const productivity = Math.round(
       (
@@ -63,6 +68,8 @@ export class DashboardService {
       highestPriorityTask,
       longestHabitStreak,
       nearestGoalDeadline,
+      gymStats,
+      footballStats,
     };
   }
 }

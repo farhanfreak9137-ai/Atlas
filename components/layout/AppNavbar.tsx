@@ -8,7 +8,7 @@ import {
 
 export function AppNavbar() {
   return (
-    <header className="px-10 pt-8">
+    <header className="px-4 sm:px-6 lg:px-10 pt-8">
 
       <div
         className="
@@ -24,7 +24,7 @@ export function AppNavbar() {
 
           bg-white/[0.05]
 
-          px-8
+          px-4 sm:px-6 md:px-8
 
           backdrop-blur-3xl
 
@@ -51,7 +51,8 @@ export function AppNavbar() {
         <button
           className="
             flex
-            w-[420px]
+            flex-1
+            max-w-[420px]
             items-center
             gap-3
 

@@ -14,7 +14,7 @@ export function SectionHeader({
   return (
     <div className="mb-8 flex items-center justify-between">
       <div>
-        <h2 className="text-3xl font-bold tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
           {title}
         </h2>
 
