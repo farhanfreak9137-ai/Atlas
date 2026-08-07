@@ -1,5 +1,6 @@
 import { ChatMessage } from "@/types/chat";
 import { useChatStore } from "@/stores/chat.store";
+import { useDashboardStore } from "@/stores/dashboard.store";
 import { Storage } from "@/lib/storage/storage";
 import { STORAGE_KEYS } from "@/lib/constants/storageKeys";
 
@@ -25,11 +26,28 @@ function buildAtlasContext(): string {
   }));
   const activeGoals = goals.filter((g) => g.status !== "completed");
 
+  const settings = useDashboardStore.getState().settings;
+
+  const verbosityInstructions: Record<number, string> = {
+    1: "RESPONSE VERBOSITY: Extremely brief and concise. Keep responses to 1-2 sentences maximum.",
+    2: "RESPONSE VERBOSITY: Concise. Answer directly without fluff.",
+    3: "RESPONSE VERBOSITY: Balanced length and detail.",
+    4: "RESPONSE VERBOSITY: Detailed. Provide background explanation and bullet points.",
+    5: "RESPONSE VERBOSITY: Comprehensive. Provide deep analysis, complete explanations, and thorough suggestions.",
+  };
+
+  const creativeInstruction = settings.creativeMode
+    ? "MODE: Creative mode enabled. Be imaginative, energetic, and offer creative suggestions."
+    : "MODE: Precise mode. Be factual, logical, and direct.";
+
   return `
 You are Atlas, the user's personal AI assistant embedded inside their Atlas life OS.
 You have full context of their real data. Be insightful, specific, and helpful.
 Never say you don't have access to their data — you do, it's provided below.
 Today's date: ${today}
+
+${verbosityInstructions[settings.aiVerbosity] ?? verbosityInstructions[3]}
+${creativeInstruction}
 
 === TASKS ===
 Pending (${pendingTasks.length}):
@@ -98,10 +116,13 @@ export class ChatService {
     useChatStore.getState().setLoading(true);
 
     try {
+      const settings = useDashboardStore.getState().settings;
       const systemPrompt = buildAtlasContext();
-      const history = buildMessageHistory(
-        useChatStore.getState().messages.slice(0, -1) // exclude the message we just added
-      );
+      const history = settings.rememberHistory
+        ? buildMessageHistory(
+            useChatStore.getState().messages.slice(0, -1) // exclude the message we just added
+          )
+        : [];
 
       const response = await fetch(
         "https://openrouter.ai/api/v1/chat/completions",
@@ -115,6 +136,7 @@ export class ChatService {
           },
           body: JSON.stringify({
             model: "google/gemini-2.0-flash-exp:free", // free model — change anytime
+            temperature: settings.creativeMode ? 0.9 : 0.3,
             messages: [
               { role: "system", content: systemPrompt },
               ...history,

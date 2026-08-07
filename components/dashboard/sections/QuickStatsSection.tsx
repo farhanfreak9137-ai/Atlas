@@ -17,11 +17,19 @@ interface QuickStatsSectionProps {
   dashboard: ReturnType<
     typeof DashboardService.getOverview
   >;
+  activeWidgets?: string[];
 }
 
 export function QuickStatsSection({
   dashboard,
+  activeWidgets,
 }: QuickStatsSectionProps) {
+  const showAll = !activeWidgets;
+  const showTasks = showAll || activeWidgets.includes("tasks");
+  const showHabits = showAll || activeWidgets.includes("habits");
+  const showGoals = showAll || activeWidgets.includes("goals");
+  const showStats = showAll || activeWidgets.includes("statistics");
+
   return (
     <section>
       <SectionHeader
@@ -29,43 +37,53 @@ export function QuickStatsSection({
         subtitle="A quick snapshot of your progress."
       />
 
-      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-6">
-        <InfoCard
-          title="Tasks"
-          value={`${dashboard.tasks.active} Active`}
-          icon={<CheckSquare size={24} color="#34C759" />}
-        />
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {showTasks && (
+          <InfoCard
+            title="Tasks"
+            value={`${dashboard.tasks.active} Active`}
+            icon={<CheckSquare size={24} color="#34C759" />}
+          />
+        )}
 
-        <InfoCard
-          title="Habits"
-          value={`${dashboard.habits.completed} / ${dashboard.habits.total}`}
-          icon={<Droplets size={24} color="#34C759" />}
-        />
+        {showHabits && (
+          <InfoCard
+            title="Habits"
+            value={`${dashboard.habits.completed} / ${dashboard.habits.total}`}
+            icon={<Droplets size={24} color="#34C759" />}
+          />
+        )}
 
-        <InfoCard
-          title="Goals"
-          value={`${dashboard.goals.active} Active`}
-          icon={<FolderKanban size={24} color="#34C759" />}
-        />
+        {showGoals && (
+          <InfoCard
+            title="Goals"
+            value={`${dashboard.goals.active} Active`}
+            icon={<FolderKanban size={24} color="#34C759" />}
+          />
+        )}
 
-        <InfoCard
-          title="Productivity"
-          value={`${dashboard.productivity}%`}
-          icon={<Activity size={24} color="#34C759" />}
-        />
+        {showStats && (
+          <>
+            <InfoCard
+              title="Productivity"
+              value={`${dashboard.productivity}%`}
+              icon={<Activity size={24} color="#34C759" />}
+            />
 
-        <InfoCard
-          title="Gym"
-          value={`${dashboard.gymStats.streak} day streak`}
-          icon={<Dumbbell size={24} color="#34C759" />}
-        />
+            <InfoCard
+              title="Gym"
+              value={`${dashboard.gymStats.streak} day streak`}
+              icon={<Dumbbell size={24} color="#34C759" />}
+            />
 
-        <InfoCard
-          title="Football"
-          value={`${dashboard.footballStats.totalGoals} goals`}
-          icon={<Trophy size={24} color="#34C759" />}
-        />
+            <InfoCard
+              title="Football"
+              value={`${dashboard.footballStats.totalGoals} goals`}
+              icon={<Trophy size={24} color="#34C759" />}
+            />
+          </>
+        )}
       </div>
     </section>
   );
-}
+}

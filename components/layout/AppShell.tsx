@@ -1,112 +1,94 @@
-import { ReactNode } from "react";
+"use client";
+
+import { ReactNode, useEffect, useState } from "react";
 import { AppSidebar } from "./AppSidebar";
 import { AppNavbar } from "./AppNavbar";
+import { MobileBottomNav } from "./MobileBottomNav";
+import { MobileNavDrawer } from "./MobileNavDrawer";
 import { SearchPanel } from "@/components/common/SearchPanel";
+import { SettingsProvider } from "@/components/settings/SettingsProvider";
+import { ProfilePanel } from "./ProfilePanel";
+import { AuthScreen } from "@/components/auth/AuthScreen";
+import { useAuthStore } from "@/stores/auth.store";
 
 interface AppShellProps {
   children: ReactNode;
 }
 
-export function AppShell({
-  children,
-}: AppShellProps) {
+export function AppShell({ children }: AppShellProps) {
+  const { user, loading, isSupabaseConfigured, initAuthListener } = useAuthStore();
+  const [guestMode, setGuestMode] = useState(false);
+
+  // Initialize Auth Listener immediately when AppShell mounts
+  useEffect(() => {
+    const unsub = initAuthListener();
+
+    // Safety fallback: Ensure loading screen never hangs longer than 1.5s
+    const timer = setTimeout(() => {
+      useAuthStore.setState({ loading: false });
+    }, 1500);
+
+    return () => {
+      unsub();
+      clearTimeout(timer);
+    };
+  }, [initAuthListener]);
+
+  // If loading session, show dark splash spinner
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#050816] text-white">
+        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#1F7A5B] to-[#2A8F66] text-xl font-bold animate-pulse shadow-[0_0_40px_rgba(31,122,91,.4)]">
+          A
+        </div>
+        <p className="mt-4 text-xs text-zinc-500 font-mono tracking-wider">LOADING ATLAS OS...</p>
+      </div>
+    );
+  }
+
+  // If not authenticated and Supabase keys are configured, show dedicated Auth Screen first
+  if (!user && !guestMode && isSupabaseConfigured) {
+    return <AuthScreen onGuestAccess={() => setGuestMode(true)} />;
+  }
+
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#050816] text-white">
+      {/* Settings effects — applies theme, font-size, accent color, etc. */}
+      <SettingsProvider />
 
-      {/* Background */}
-
+      {/* Background Glows */}
       <div className="absolute inset-0 -z-50">
-
-        {/* Blue Glow */}
-
-        <div
-          className="
-            absolute
-            left-[-250px]
-            top-[-200px]
-            h-[700px]
-            w-[700px]
-            rounded-full
-            bg-[#1F7A5B]/20
-            blur-[180px]
-        "
-        />
-
-        {/* Purple Glow */}
-
-        <div
-          className="
-            absolute
-            right-[-300px]
-            top-[25%]
-            h-[650px]
-            w-[650px]
-            rounded-full
-            bg-violet-500/15
-            blur-[220px]
-        "
-        />
-
-        {/* Cyan Glow */}
-
-        <div
-          className="
-            absolute
-            bottom-[-300px]
-            left-1/3
-            h-[700px]
-            w-[700px]
-            rounded-full
-            bg-cyan-500/10
-            blur-[220px]
-        "
-        />
-
-        {/* Subtle Grid */}
-
-        <div
-          className="
-            absolute
-            inset-0
-            opacity-[0.04]
-            bg-[linear-gradient(rgba(255,255,255,.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.08)_1px,transparent_1px)]
-            bg-[size:60px_60px]
-        "
-        />
-
-        {/* Vignette */}
-
-        <div
-          className="
-            absolute
-            inset-0
-            bg-[radial-gradient(circle_at_center,transparent_40%,rgba(0,0,0,.55))]
-        "
-        />
-
+        <div className="absolute left-[-250px] top-[-200px] h-[700px] w-[700px] rounded-full bg-[#1F7A5B]/20 blur-[180px]" />
+        <div className="absolute right-[-300px] top-[25%] h-[650px] w-[650px] rounded-full bg-violet-500/15 blur-[220px]" />
+        <div className="absolute bottom-[-300px] left-1/3 h-[700px] w-[700px] rounded-full bg-cyan-500/10 blur-[220px]" />
+        <div className="absolute inset-0 opacity-[0.04] bg-[linear-gradient(rgba(255,255,255,.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.08)_1px,transparent_1px)] bg-[size:60px_60px]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_40%,rgba(0,0,0,.55))]" />
       </div>
 
-      {/* App */}
-
-      <div className="relative z-10 flex min-h-screen">
-
+      {/* Main Layout */}
+      <div className="relative z-10 flex min-h-screen min-w-0 w-full">
         <AppSidebar />
 
-        <div className="flex flex-1 flex-col">
-
+        <div className="flex flex-1 flex-col min-w-0 w-full">
           <AppNavbar />
 
-          <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-10">
+          <main className="flex-1 min-w-0 w-full overflow-y-auto p-3.5 pb-28 sm:p-6 sm:pb-28 lg:p-10 lg:pb-10">
             {children}
           </main>
-
         </div>
-
       </div>
 
-      {/* Global: Search panel mounted here */}
+      {/* Mobile bottom navigation */}
+      <MobileBottomNav />
+
+      {/* Mobile slide-over navigation drawer */}
+      <MobileNavDrawer />
+
+      {/* Global Search panel */}
       <SearchPanel />
 
+      {/* Global Profile panel */}
+      <ProfilePanel />
     </div>
   );
 }

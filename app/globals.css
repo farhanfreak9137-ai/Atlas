@@ -166,3 +166,40 @@
 .smooth {
   transition: all 250ms ease;
 }
+
+/* iOS Safe Area support */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* ── Reduced Motion ──────────────────────────────────────────── */
+[data-reduced-motion="true"] *,
+[data-reduced-motion="true"] *::before,
+[data-reduced-motion="true"] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* ── High Contrast ───────────────────────────────────────────── */
+[data-contrast="high"] {
+  --text: #ffffff;
+  --text-secondary: #e4e4e7;
+  --border: rgba(255, 255, 255, 0.25);
+  --glass: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.20);
+}
+
+[data-contrast="high"] .glass {
+  border-color: rgba(255, 255, 255, 0.20) !important;
+}
+
+/* Hide scrollbars for clean touch scroll */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

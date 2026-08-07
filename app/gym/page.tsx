@@ -69,19 +69,19 @@ export default function GymPage() {
 
   if (isLoading) {
     return (
-      <main className="mx-auto max-w-7xl p-8">
+      <div className="mx-auto max-w-7xl">
         <DashboardPanel>
           <div className="flex flex-col items-center justify-center py-16">
             <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-emerald-500"></div>
             <p className="mt-4 text-zinc-400">Loading gym data...</p>
           </div>
         </DashboardPanel>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main className="mx-auto max-w-7xl p-8 space-y-8">
+    <div className="mx-auto max-w-7xl space-y-6 sm:space-y-8">
       <SectionHeader
         title="Gym Routine & Workout Log"
         subtitle="Track your daily workouts, personal records, and volume progress."
@@ -288,6 +288,6 @@ export default function GymPage() {
           </GlassCard>
         </div>
       </div>
-    </main>
+    </div>
   );
-}
+}

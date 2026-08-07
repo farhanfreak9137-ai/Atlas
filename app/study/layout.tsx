@@ -19,27 +19,27 @@ export default function StudyLayout({
   const pathname = usePathname();
 
   return (
-    <main className="mx-auto max-w-7xl p-8 space-y-6">
+    <div className="mx-auto max-w-7xl space-y-6">
       {/* Header */}
       <div className="mb-2">
         <p className="text-sm uppercase tracking-[0.25em] text-emerald-500">Academic</p>
-        <h1 className="mt-2 text-5xl font-bold text-white">Study</h1>
-        <p className="mt-3 max-w-2xl text-zinc-400">
+        <h1 className="mt-2 text-3xl sm:text-5xl font-bold text-white">Study</h1>
+        <p className="mt-3 max-w-2xl text-zinc-400 text-sm sm:text-base">
           Track your subjects, study sessions, and academic performance.
         </p>
       </div>
 
       {/* Tab Navigation */}
-      <nav className="flex space-x-1 rounded-2xl border border-white/5 bg-zinc-900/60 p-1.5">
+      <nav className="flex items-center space-x-1 rounded-2xl border border-white/5 bg-zinc-900/60 p-1.5 overflow-x-auto no-scrollbar">
         {tabs.map(({ href, label, icon: Icon }) => {
           const isActive = pathname === href;
           return (
             <Link
               key={href}
               href={href}
-              className={`flex flex-1 items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition-all duration-200 ${
+              className={`flex shrink-0 sm:flex-1 items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-xs sm:text-sm font-medium transition-all duration-200 ${
                 isActive
-                  ? "bg-zinc-800 text-white shadow-sm"
+                  ? "bg-zinc-800 text-white shadow-sm font-semibold"
                   : "text-zinc-400 hover:text-zinc-200"
               }`}
             >
@@ -52,6 +52,6 @@ export default function StudyLayout({
 
       {/* Page Content */}
       {children}
-    </main>
+    </div>
   );
 }

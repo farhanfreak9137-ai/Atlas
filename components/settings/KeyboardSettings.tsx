@@ -1,49 +1,69 @@
+"use client";
+
+import React from "react";
+
+import { GlassCard } from "@/components/ui/GlassCard";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { ToggleButton } from "@/components/ui/ToggleButton";
 
-export default function KeyboardSettings({ value, onChange }: {
-  value: { shortcuts: Record<string, boolean>; shortcut?: string };
-  onChange: (newValue: Partial<typeof value>) => void;
-}) {
+const SHORTCUTS = [
+  { keys: ["Ctrl", "K"],        label: "Open Search",       desc: "Search tasks, notes, goals & more" },
+  { keys: ["Ctrl", "Shift", "D"], label: "Go to Dashboard",  desc: "Jump back to the dashboard" },
+  { keys: ["Esc"],              label: "Close Panel",        desc: "Close any open panel or modal" },
+  { keys: ["↑", "↓"],          label: "Navigate Results",   desc: "Move between search results" },
+  { keys: ["Enter"],            label: "Select Result",      desc: "Open the highlighted search result" },
+];
+
+function KeyBadge({ k }: { k: string }) {
   return (
-    <section>
-      <SectionHeader title="Keyboard Shortcuts" subtitle="Customize your key combinations" />
-      <div className="grid grid-cols-2 gap-4 mt-4">
-        <div className="p-4 bg-accent/10 rounded-lg">
-          <p className="text-sm font-medium text-accent">Add Shortcut</p>
-          <div className="mt-2 flex flex-col gap-1">
-            <input
-              type="text"
-              placeholder="e.g. Ctrl+C"
-              value={value.shortcut || ""}
-              onChange={(e) => onChange({ shortcut: e.target.value })}
-              className="border rounded px-2 py-1"
-            />
-            <ToggleButton selected={!!value.shortcut} onClick={() => {
-              if (value.shortcut) {
-                onChange({ shortcut: value.shortcut.toUpperCase() });
-              }
-            }}>
-              Set
-            </ToggleButton>
-          </div>
-        </div>
-
-        <div className="p-4 bg-accent/10 rounded-lg">
-          <p className="text-sm font-medium text-accent">Common Shortcuts</p>
-          <div className="mt-2 flex flex-col gap-1">
-            <ToggleButton selected={!!value.shortcuts["Ctrl+Z"]} onClick={() => onChange({ shortcuts: { ...value.shortcuts, ["Ctrl+Z"]: !value.shortcuts["Ctrl+Z"] } })}>
-              Undo
-            </ToggleButton>
-            <ToggleButton selected={!!value.shortcuts["Ctrl+Y"]} onClick={() => onChange({ shortcuts: { ...value.shortcuts, ["Ctrl+Y"]: !value.shortcuts["Ctrl+Y"] } })}>
-              Redo
-            </ToggleButton>
-            <ToggleButton selected={!!value.shortcuts["Ctrl+F"]} onClick={() => onChange({ shortcuts: { ...value.shortcuts, ["Ctrl+F"]: !value.shortcuts["Ctrl+F"] } })}>
-              Find
-            </ToggleButton>
-          </div>
-        </div>
-      </div>
-    </section>
+    <kbd className="
+      inline-flex items-center justify-center
+      rounded-lg border border-white/20 bg-white/5
+      px-2.5 py-1
+      text-xs font-mono font-semibold text-zinc-300
+      shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]
+    ">
+      {k}
+    </kbd>
   );
 }
+
+export default function KeyboardSettings() {
+  return (
+    <section>
+      <SectionHeader
+        title="Keyboard Shortcuts"
+        subtitle="Handy shortcuts available throughout Atlas"
+      />
+
+      <GlassCard className="!hover:-translate-y-0">
+        <div className="divide-y divide-white/5">
+          {SHORTCUTS.map((s) => (
+            <div
+              key={s.label}
+              className="flex items-center justify-between gap-4 py-4 first:pt-0 last:pb-0"
+            >
+              <div>
+                <p className="font-medium">{s.label}</p>
+                <p className="text-xs text-zinc-500 mt-0.5">{s.desc}</p>
+              </div>
+              <div className="flex shrink-0 items-center gap-1">
+                {s.keys.map((k, i) => (
+                  <React.Fragment key={k}>
+                    <KeyBadge k={k} />
+                    {i < s.keys.length - 1 && (
+                      <span className="text-xs text-zinc-600">+</span>
+                    )}
+                  </React.Fragment>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <p className="mt-6 text-xs text-zinc-600">
+          On macOS, <kbd className="font-mono text-xs">Ctrl</kbd> = <kbd className="font-mono text-xs">⌘ Cmd</kbd>
+        </p>
+      </GlassCard>
+    </section>
+  );
+}

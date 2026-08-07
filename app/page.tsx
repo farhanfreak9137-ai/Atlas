@@ -8,9 +8,11 @@ import { AIInsightCard } from "@/components/dashboard/cards/AIInsightCard";
 import { ActivityFeed } from "@/components/dashboard/sections/ActivityFeed";
 
 import { useDashboard } from "@/hooks/useDashboard";
+import { useDashboardStore } from "@/stores/dashboard.store";
 
 export default function Home() {
   const { dashboard, isLoading, isError } = useDashboard();
+  const settings = useDashboardStore((s) => s.settings);
 
   if (isLoading) {
     return (
@@ -36,23 +38,45 @@ export default function Home() {
     );
   }
 
+  const activeWidgets = settings.activeWidgets ?? [];
+  const layout = settings.dashboardLayout ?? "grid";
+
+  // Determine spacing and layout container style
+  const layoutClasses =
+    layout === "compact"
+      ? "space-y-4"
+      : layout === "list"
+      ? "space-y-6 max-w-4xl mx-auto"
+      : "space-y-8";
+
+  const showStats = activeWidgets.some((w) =>
+    ["tasks", "habits", "goals", "statistics"].includes(w)
+  );
+
   return (
-    <div className="space-y-8">
+    <div className={layoutClasses}>
       <GreetingCard />
 
-      <DashboardGrid>
-        <div className="xl:col-span-8">
-          <QuickStatsSection dashboard={dashboard} />
-        </div>
+      {(showStats || activeWidgets.includes("calendar")) && (
+        <DashboardGrid>
+          {showStats && (
+            <div className={activeWidgets.includes("calendar") ? "xl:col-span-8" : "xl:col-span-12"}>
+              <QuickStatsSection dashboard={dashboard} activeWidgets={activeWidgets} />
+            </div>
+          )}
 
-        <div className="xl:col-span-4">
-          <TodaysFocus dashboard={dashboard} />
-        </div>
-      </DashboardGrid>
+          {activeWidgets.includes("calendar") && (
+            <div className={showStats ? "xl:col-span-4" : "xl:col-span-12"}>
+              <TodaysFocus dashboard={dashboard} />
+            </div>
+          )}
+        </DashboardGrid>
+      )}
 
-      <AIInsightCard />
+      {activeWidgets.includes("aiInsights") && <AIInsightCard />}
 
       <ActivityFeed />
     </div>
   );
 }
+

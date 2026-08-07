@@ -89,17 +89,17 @@ export default function FootballPage() {
 
   if (isLoading) {
     return (
-      <main className="mx-auto max-w-7xl p-8">
+      <div className="mx-auto max-w-7xl">
         <div className="flex flex-col items-center justify-center py-16">
           <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-emerald-500"></div>
           <p className="mt-4 text-zinc-400">Loading football data...</p>
         </div>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main className="mx-auto max-w-7xl p-8 space-y-8">
+    <div className="mx-auto max-w-7xl space-y-6 sm:space-y-8">
       <SectionHeader
         title="Football Performance Tracker"
         subtitle="Log your matches, track training sessions, and analyze your game."
@@ -347,6 +347,6 @@ export default function FootballPage() {
           </GlassCard>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

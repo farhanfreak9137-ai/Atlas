@@ -23,7 +23,7 @@ export function GreetingCard() {
           Welcome back
         </p>
 
-        <h1 className="mt-2 text-5xl font-bold tracking-tight text-primary">
+        <h1 className="mt-2 text-3xl font-bold tracking-tight text-primary sm:text-4xl lg:text-5xl">
           {greeting}, Farhan 👋
         </h1>
 
@@ -37,4 +37,4 @@ export function GreetingCard() {
 
     </GlassCard>
   );
-}
+}

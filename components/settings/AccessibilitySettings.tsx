@@ -1,76 +1,101 @@
+"use client";
+
+import { GlassCard } from "@/components/ui/GlassCard";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { ToggleButton } from "@/components/ui/ToggleButton";
-import { Slider } from "@/components/ui/Slider";
+
+interface AccessibilityValue {
+  reducedMotion: boolean;
+  contrast: "normal" | "high";
+}
 
 export default function AccessibilitySettings({
   value,
   onChange,
 }: {
-  value: {
-    fontSize: "small" | "medium" | "large";
-    contrast: "normal" | "high";
-    reducedMotion: boolean;
-    screenReader: boolean;
-  };
-  onChange: (newValue: Partial<typeof value>) => void;
+  value: AccessibilityValue;
+  onChange: (partial: Partial<AccessibilityValue>) => void;
 }) {
-  // Safe defaults in case value is partially undefined
-  const safeFontSize = value.fontSize ?? "medium";
-  const safeContrast = value.contrast ?? "normal";
-  const safeReducedMotion = value.reducedMotion ?? false;
-  const safeScreenReader = value.screenReader ?? false;
-
   return (
     <section>
-      <SectionHeader title="Accessibility" subtitle="Make Atlas easier to use" />
-      <div className="grid grid-cols-1 gap-4 mt-4">
-        <div className="p-4 bg-accent/10 rounded-lg">
-          <p className="text-sm font-medium text-accent">Text Size</p>
-          <Slider
-            value={safeFontSize === "small" ? 0 : safeFontSize === "medium" ? 1 : 2}
-            min={0}
-            max={2}
-            onChange={(newValue) => {
-              const map: ("small" | "medium" | "large")[] = ["small", "medium", "large"];
-              onChange({ fontSize: map[newValue] });
-            }}
-          />
-        </div>
+      <SectionHeader
+        title="Accessibility"
+        subtitle="Make Atlas easier to see and interact with"
+      />
 
-        <div className="p-4 bg-accent/10 rounded-lg">
-          <p className="text-sm font-medium text-accent">Contrast Mode</p>
-          <div className="mt-2 flex flex-col gap-1">
-            <ToggleButton
-              selected={safeContrast === "normal"}
-              onClick={() => onChange({ contrast: "normal" })}
+      <div className="grid gap-4 md:grid-cols-2">
+
+        {/* Reduced Motion */}
+        <GlassCard className="!hover:-translate-y-0">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="font-semibold">Reduce Motion</p>
+              <p className="mt-1 text-sm text-zinc-400">
+                Disables all animations and transitions throughout the app.
+                Good for motion sensitivity or performance on slow devices.
+              </p>
+            </div>
+
+            {/* Toggle switch */}
+            <button
+              onClick={() => onChange({ reducedMotion: !value.reducedMotion })}
+              className={`
+                relative shrink-0 mt-1
+                h-7 w-12 rounded-full border transition-all duration-300
+                ${value.reducedMotion
+                  ? "bg-[var(--primary)] border-[var(--primary)]"
+                  : "bg-white/10 border-white/20"
+                }
+              `}
+              aria-pressed={value.reducedMotion}
+              role="switch"
             >
-              Normal
+              <span
+                className={`
+                  absolute top-0.5 h-6 w-6 rounded-full bg-white shadow-sm
+                  transition-transform duration-300
+                  ${value.reducedMotion ? "translate-x-5" : "translate-x-0.5"}
+                `}
+              />
+            </button>
+          </div>
+
+          <div className={`mt-4 rounded-xl p-3 text-xs transition-all ${
+            value.reducedMotion
+              ? "bg-[var(--primary)]/10 text-zinc-300 border border-[var(--primary)]/20"
+              : "bg-white/5 text-zinc-500"
+          }`}>
+            {value.reducedMotion
+              ? "✓ All animations are disabled"
+              : "Animations are currently active"}
+          </div>
+        </GlassCard>
+
+        {/* Contrast Mode */}
+        <GlassCard className="!hover:-translate-y-0">
+          <p className="font-semibold mb-1">Contrast Mode</p>
+          <p className="text-sm text-zinc-400 mb-4">
+            High contrast improves text readability by boosting border and text visibility.
+          </p>
+          <div className="flex flex-col gap-2">
+            <ToggleButton
+              selected={value.contrast === "normal"}
+              onClick={() => onChange({ contrast: "normal" })}
+              className="justify-start"
+            >
+              👁 Normal Contrast
             </ToggleButton>
             <ToggleButton
-              selected={safeContrast === "high"}
+              selected={value.contrast === "high"}
               onClick={() => onChange({ contrast: "high" })}
+              className="justify-start"
             >
-              High Contrast
+              ⬛ High Contrast
             </ToggleButton>
           </div>
-        </div>
+        </GlassCard>
 
-        <div className="p-4 bg-accent/10 rounded-lg">
-          <p className="text-sm font-medium text-accent">Reduced Motion</p>
-          <ToggleButton
-            selected={safeReducedMotion}
-            onClick={() => onChange({ reducedMotion: !safeReducedMotion })}
-          />
-        </div>
-
-        <div className="p-4 bg-accent/10 rounded-lg">
-          <p className="text-sm font-medium text-accent">Screen Reader Support</p>
-          <ToggleButton
-            selected={safeScreenReader}
-            onClick={() => onChange({ screenReader: !safeScreenReader })}
-          />
-        </div>
       </div>
     </section>
   );
-}
+}

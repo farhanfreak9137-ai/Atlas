@@ -12,96 +12,90 @@ export default function SettingsLayout({ settings, onChange }: {
   settings: { settings: SettingsState };
   onChange: (partial: Partial<SettingsState>) => void;
 }) {
+  const s = settings.settings;
+
   return (
-    <div className="p-8 space-y-8">
+    <div className="space-y-10">
       <ThemeSettings
         value={{
-          scheme: settings.settings.theme,
-          primaryColor: 0,
-          fontSize: settings.settings.fontSize
+          scheme: s.theme,
+          accentColor: s.accentColor,
+          fontSize: s.fontSize,
         }}
         onChange={(partial) => {
           onChange({
-            theme: partial.scheme ?? settings.settings.theme,
-            fontSize: partial.fontSize ?? settings.settings.fontSize
+            theme: partial.scheme ?? s.theme,
+            accentColor: partial.accentColor ?? s.accentColor,
+            fontSize: partial.fontSize ?? s.fontSize,
           });
         }}
       />
 
       <AIBehaviorSettings
         value={{
-          verbosity: settings.settings.aiVerbosity,
-          creativeMode: false, // placeholder
-          rememberHistory: settings.settings.rememberHistory
+          verbosity: s.aiVerbosity,
+          creativeMode: s.creativeMode,
+          rememberHistory: s.rememberHistory,
         }}
         onChange={(partial) => {
           onChange({
-            aiVerbosity: partial.verbosity,
-            rememberHistory: partial.rememberHistory
-          });
-        }}
-      />
-
-      <PrivacySettings
-        value={{
-          autoLockTime: settings.settings.autoLockTime,
-          encryption: true, // placeholder
-          dataRetention: "week" // placeholder
-        }}
-        onChange={(partial) => {
-          onChange({
-            autoLockTime: partial.autoLockTime,
-            // other privacy fields...
-          });
-        }}
-      />
-
-      <NotificationsSettings
-        value={{
-          enabled: settings.settings.notificationType,
-          category: "tasks" // placeholder
-        }}
-        onChange={(partial) => {
-          onChange({
-            notificationType: partial.enabled,
+            aiVerbosity: partial.verbosity ?? s.aiVerbosity,
+            creativeMode: partial.creativeMode ?? s.creativeMode,
+            rememberHistory: partial.rememberHistory ?? s.rememberHistory,
           });
         }}
       />
 
       <DashboardSettings
         value={{
-          layout: "grid", // placeholder
-          widgets: settings.settings.activeWidgets,
-          spacing: 4 // placeholder
+          layout: s.dashboardLayout,
+          widgets: s.activeWidgets,
         }}
         onChange={(partial) => {
           onChange({
-            activeWidgets: partial.widgets,
+            dashboardLayout: partial.layout ?? s.dashboardLayout,
+            activeWidgets: partial.widgets ?? s.activeWidgets,
           });
         }}
       />
 
-      <KeyboardSettings
-        value={{ shortcuts: {} }} // placeholder
-        onChange={() => {
-          // keyboard shortcuts saved elsewhere maybe
+      <NotificationsSettings
+        value={{ categories: s.notificationCategories }}
+        onChange={(partial) => {
+          onChange({
+            notificationCategories:
+              partial.categories ?? s.notificationCategories,
+          });
         }}
       />
 
       <AccessibilitySettings
         value={{
-          fontSize: settings.settings.fontSize,
-          contrast: settings.settings.contrastMode,
-          reducedMotion: false,
-          screenReader: false
+          reducedMotion: s.reducedMotion,
+          contrast: s.contrastMode,
         }}
         onChange={(partial) => {
           onChange({
-            fontSize: partial.fontSize,
-            contrastMode: partial.contrast,
+            reducedMotion: partial.reducedMotion ?? s.reducedMotion,
+            contrastMode: partial.contrast ?? s.contrastMode,
           });
         }}
       />
+
+      <PrivacySettings
+        value={{
+          autoLockTime: s.autoLockTime,
+          dataRetention: s.dataRetention,
+        }}
+        onChange={(partial) => {
+          onChange({
+            autoLockTime: partial.autoLockTime ?? s.autoLockTime,
+            dataRetention: partial.dataRetention ?? s.dataRetention,
+          });
+        }}
+      />
+
+      <KeyboardSettings />
     </div>
   );
-}
+}

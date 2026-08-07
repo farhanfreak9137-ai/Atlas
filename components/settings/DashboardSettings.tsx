@@ -1,79 +1,110 @@
+"use client";
+
+import { GlassCard } from "@/components/ui/GlassCard";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { ToggleButton } from "@/components/ui/ToggleButton";
-import { Slider } from "@/components/ui/Slider";
+
+const WIDGET_OPTIONS = [
+  { id: "tasks",      label: "Tasks",      emoji: "✅" },
+  { id: "habits",     label: "Habits",     emoji: "🔥" },
+  { id: "goals",      label: "Goals",      emoji: "🎯" },
+  { id: "calendar",   label: "Calendar",   emoji: "📅" },
+  { id: "aiInsights", label: "AI Insights",emoji: "🧠" },
+  { id: "statistics", label: "Statistics", emoji: "📊" },
+];
+
+type Layout = "grid" | "list" | "compact";
+
+interface DashboardValue {
+  layout: Layout;
+  widgets: string[];
+}
 
 export default function DashboardSettings({
   value,
   onChange,
 }: {
-  value: { layout: string; widgets: string[] | null; spacing: number };
-  onChange: (newValue: Partial<{ layout: string; widgets: string[]; spacing: number }>) => void;
+  value: DashboardValue;
+  onChange: (partial: Partial<DashboardValue>) => void;
 }) {
-  const layouts = ["grid", "list", "compact"];
-  const widgetOptions = [
-    "tasks",
-    "habits",
-    "goals",
-    "calendar",
-    "aiInsights",
-    "statistics",
-  ];
-
-  // Safeguard against null/undefined widgets array
-  const safeWidgets = value.widgets || [];
+  function toggleWidget(id: string) {
+    const next = value.widgets.includes(id)
+      ? value.widgets.filter((w) => w !== id)
+      : [...value.widgets, id];
+    onChange({ widgets: next });
+  }
 
   return (
     <section>
-      <SectionHeader title="Dashboard" subtitle="Customize your dashboard layout" />
-      <div className="grid grid-cols-1 gap-4 mt-4">
-        <div className="p-4 bg-accent/10 rounded-lg">
-          <p className="text-sm font-medium text-accent">Layout Style</p>
-          <div className="mt-2 flex flex-col gap-1">
-            {layouts.map((layout) => (
-              <ToggleButton
-                key={layout}
-                selected={value.layout === layout}
-                onClick={() => onChange({ layout })}
+      <SectionHeader
+        title="Dashboard"
+        subtitle="Control which widgets appear and how they're arranged"
+      />
+
+      <div className="grid gap-4 md:grid-cols-2">
+
+        {/* Layout Style */}
+        <GlassCard className="!hover:-translate-y-0">
+          <p className="text-sm font-semibold text-zinc-400 mb-4">Layout Style</p>
+          <div className="flex flex-col gap-2">
+            {([
+              ["grid",    "⊞ Grid",    "Cards arranged in a responsive grid"],
+              ["list",    "☰ List",    "Stacked vertical list view"],
+              ["compact", "⊟ Compact", "Minimal, information-dense layout"],
+            ] as [Layout, string, string][]).map(([l, label, desc]) => (
+              <button
+                key={l}
+                onClick={() => onChange({ layout: l })}
+                className={`
+                  flex items-center gap-3 rounded-2xl border p-4 text-left
+                  transition-all duration-200
+                  ${value.layout === l
+                    ? "border-[var(--primary)]/30 bg-[var(--primary)]/10 text-white"
+                    : "border-white/10 bg-white/5 text-zinc-400 hover:text-white hover:bg-white/8"
+                  }
+                `}
               >
-                {layout.charAt(0).toUpperCase() + layout.slice(1)}
-              </ToggleButton>
+                <div>
+                  <p className="font-medium">{label}</p>
+                  <p className="text-xs opacity-60 mt-0.5">{desc}</p>
+                </div>
+              </button>
             ))}
           </div>
-        </div>
+        </GlassCard>
 
-        <div className="p-4 bg-accent/10 rounded-lg">
-          <p className="text-sm font-medium text-accent">Widgets</p>
-          <div className="mt-2 flex flex-wrap gap-2">
-            {widgetOptions.map((widget) => (
-              <ToggleButton
-                key={widget}
-                selected={safeWidgets.includes(widget)}
-                onClick={() => {
-                  const newWidgets = safeWidgets.includes(widget)
-                    ? safeWidgets.filter((w) => w !== widget)
-                    : [...safeWidgets, widget];
-                  onChange({ widgets: newWidgets });
-                }}
-              >
-                {widget.charAt(0).toUpperCase() + widget.slice(1)}
-              </ToggleButton>
-            ))}
+        {/* Widgets */}
+        <GlassCard className="!hover:-translate-y-0">
+          <p className="text-sm font-semibold text-zinc-400 mb-4">Visible Widgets</p>
+          <div className="grid grid-cols-2 gap-2">
+            {WIDGET_OPTIONS.map((w) => {
+              const on = value.widgets.includes(w.id);
+              return (
+                <button
+                  key={w.id}
+                  onClick={() => toggleWidget(w.id)}
+                  className={`
+                    flex items-center gap-2 rounded-xl border p-3 text-left text-sm
+                    transition-all duration-200
+                    ${on
+                      ? "border-[var(--primary)]/30 bg-[var(--primary)]/10 text-white"
+                      : "border-white/10 bg-white/5 text-zinc-500 hover:text-zinc-300"
+                    }
+                  `}
+                >
+                  <span>{w.emoji}</span>
+                  <span className="font-medium">{w.label}</span>
+                </button>
+              );
+            })}
           </div>
-        </div>
 
-        <div className="p-4 bg-accent/10 rounded-lg">
-          <p className="text-sm font-medium text-accent">Widget Spacing</p>
-          <Slider
-            value={value.spacing || 4}
-            min={1}
-            max={10}
-            onChange={(newValue) => {
-              const safeValue = Math.max(1, Math.min(10, newValue));
-              onChange({ spacing: safeValue });
-            }}
-          />
-        </div>
+          <p className="mt-4 text-xs text-zinc-500">
+            {value.widgets.length} of {WIDGET_OPTIONS.length} widgets visible
+          </p>
+        </GlassCard>
+
       </div>
     </section>
   );
-}
+}
