@@ -45,7 +45,7 @@ export default function DashboardSettings({
 
         {/* Layout Style */}
         <GlassCard className="!hover:-translate-y-0">
-          <p className="text-sm font-semibold text-zinc-400 mb-4">Layout Style</p>
+          <p className="text-sm font-semibold text-[var(--text-secondary)] mb-4">Layout Style</p>
           <div className="flex flex-col gap-2">
             {([
               ["grid",    "⊞ Grid",    "Cards arranged in a responsive grid"],
@@ -59,14 +59,14 @@ export default function DashboardSettings({
                   flex items-center gap-3 rounded-2xl border p-4 text-left
                   transition-all duration-200
                   ${value.layout === l
-                    ? "border-[var(--primary)]/30 bg-[var(--primary)]/10 text-white"
-                    : "border-white/10 bg-white/5 text-zinc-400 hover:text-white hover:bg-white/8"
+                    ? "border-[var(--primary)]/50 bg-[var(--primary)]/15 text-[var(--primary)] font-semibold shadow-sm"
+                    : "border-[var(--border)] bg-[var(--surface-2,rgba(255,255,255,0.04))] text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--surface-hover)]"
                   }
                 `}
               >
                 <div>
-                  <p className="font-medium">{label}</p>
-                  <p className="text-xs opacity-60 mt-0.5">{desc}</p>
+                  <p className="font-medium text-[var(--text)]">{label}</p>
+                  <p className="text-xs text-[var(--text-secondary)] opacity-80 mt-0.5">{desc}</p>
                 </div>
               </button>
             ))}
@@ -75,7 +75,7 @@ export default function DashboardSettings({
 
         {/* Widgets */}
         <GlassCard className="!hover:-translate-y-0">
-          <p className="text-sm font-semibold text-zinc-400 mb-4">Visible Widgets</p>
+          <p className="text-sm font-semibold text-[var(--text-secondary)] mb-4">Visible Widgets</p>
           <div className="grid grid-cols-2 gap-2">
             {WIDGET_OPTIONS.map((w) => {
               const on = value.widgets.includes(w.id);
@@ -87,8 +87,8 @@ export default function DashboardSettings({
                     flex items-center gap-2 rounded-xl border p-3 text-left text-sm
                     transition-all duration-200
                     ${on
-                      ? "border-[var(--primary)]/30 bg-[var(--primary)]/10 text-white"
-                      : "border-white/10 bg-white/5 text-zinc-500 hover:text-zinc-300"
+                      ? "border-[var(--primary)]/50 bg-[var(--primary)]/15 text-[var(--primary)] font-semibold shadow-sm"
+                      : "border-[var(--border)] bg-[var(--surface-2,rgba(255,255,255,0.04))] text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--surface-hover)]"
                     }
                   `}
                 >
@@ -99,7 +99,7 @@ export default function DashboardSettings({
             })}
           </div>
 
-          <p className="mt-4 text-xs text-zinc-500">
+          <p className="mt-4 text-xs text-[var(--text-tertiary)] font-medium">
             {value.widgets.length} of {WIDGET_OPTIONS.length} widgets visible
           </p>
         </GlassCard>

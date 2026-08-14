@@ -55,11 +55,11 @@ export function AuthScreen({ onGuestAccess }: AuthScreenProps) {
   }
 
   return (
-    <div className="relative min-h-screen w-full flex items-center justify-center bg-[#050816] text-white p-4 sm:p-6 overflow-hidden">
+    <div className="relative min-h-screen w-full flex items-center justify-center bg-[#060913] text-white p-4 sm:p-6 overflow-hidden">
       {/* Background Glow Effects */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute left-1/2 top-1/4 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#1F7A5B]/20 blur-[180px]" />
-        <div className="absolute right-[-100px] bottom-[-100px] w-[500px] h-[500px] rounded-full bg-violet-500/15 blur-[200px]" />
+        <div className="absolute left-1/2 top-1/4 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-emerald-500/20 blur-[180px]" />
+        <div className="absolute right-[-100px] bottom-[-100px] w-[500px] h-[500px] rounded-full bg-cyan-500/15 blur-[200px]" />
         <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(rgba(255,255,255,.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.08)_1px,transparent_1px)] bg-[size:60px_60px]" />
       </div>
 
@@ -67,10 +67,10 @@ export function AuthScreen({ onGuestAccess }: AuthScreenProps) {
       <div className="relative z-10 w-full max-w-md space-y-6">
         {/* Header Branding */}
         <div className="text-center space-y-3">
-          <div className="inline-flex h-16 w-16 items-center justify-center rounded-3xl bg-gradient-to-br from-[#1F7A5B] to-[#2A8F66] text-2xl font-bold text-white shadow-[0_10px_40px_rgba(31,122,91,.4)] border border-white/20">
+          <div className="inline-flex h-16 w-16 items-center justify-center rounded-3xl bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 text-2xl font-extrabold text-white shadow-[0_10px_40px_rgba(16,185,129,.4)] border border-white/20">
             A
           </div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+          <h1 className="text-3xl font-extrabold font-heading tracking-tight text-white sm:text-4xl">
             Atlas OS
           </h1>
           <p className="text-sm text-zinc-400 max-w-xs mx-auto">
@@ -90,7 +90,7 @@ export function AuthScreen({ onGuestAccess }: AuthScreenProps) {
               }}
               className={`flex-1 py-2.5 text-xs font-semibold rounded-xl transition-all duration-200 ${
                 mode === "login"
-                  ? "bg-[#1F7A5B] text-white shadow-lg shadow-[#1F7A5B]/30"
+                  ? "bg-emerald-500 text-white shadow-lg shadow-emerald-500/30"
                   : "text-zinc-400 hover:text-white"
               }`}
             >
@@ -104,7 +104,7 @@ export function AuthScreen({ onGuestAccess }: AuthScreenProps) {
               }}
               className={`flex-1 py-2.5 text-xs font-semibold rounded-xl transition-all duration-200 ${
                 mode === "signup"
-                  ? "bg-[#1F7A5B] text-white shadow-lg shadow-[#1F7A5B]/30"
+                  ? "bg-emerald-500 text-white shadow-lg shadow-emerald-500/30"
                   : "text-zinc-400 hover:text-white"
               }`}
             >
@@ -128,7 +128,7 @@ export function AuthScreen({ onGuestAccess }: AuthScreenProps) {
                   placeholder="Full Name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full rounded-2xl border border-white/10 bg-white/5 pl-11 pr-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-[#1F7A5B]/60 focus:bg-white/8 transition"
+                  className="w-full rounded-2xl border border-white/10 bg-white/5 pl-11 pr-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-emerald-500/60 focus:bg-white/8 transition"
                   required
                 />
               </div>
@@ -141,7 +141,7 @@ export function AuthScreen({ onGuestAccess }: AuthScreenProps) {
                 placeholder="Email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-2xl border border-white/10 bg-white/5 pl-11 pr-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-[#1F7A5B]/60 focus:bg-white/8 transition"
+                className="w-full rounded-2xl border border-white/10 bg-white/5 pl-11 pr-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-emerald-500/60 focus:bg-white/8 transition"
                 required
               />
             </div>
@@ -153,7 +153,7 @@ export function AuthScreen({ onGuestAccess }: AuthScreenProps) {
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full rounded-2xl border border-white/10 bg-white/5 pl-11 pr-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-[#1F7A5B]/60 focus:bg-white/8 transition"
+                className="w-full rounded-2xl border border-white/10 bg-white/5 pl-11 pr-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-emerald-500/60 focus:bg-white/8 transition"
                 required
               />
             </div>
@@ -161,7 +161,7 @@ export function AuthScreen({ onGuestAccess }: AuthScreenProps) {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#1F7A5B] to-[#2A8F66] py-3.5 text-sm font-semibold text-white shadow-lg shadow-[0_10px_30px_rgba(31,122,91,.4)] hover:shadow-[0_15px_40px_rgba(31,122,91,.5)] transition active:scale-[0.99]"
+              className="w-full flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 py-3.5 text-sm font-semibold text-white shadow-lg shadow-[0_10px_30px_rgba(16,185,129,.4)] hover:shadow-[0_15px_40px_rgba(16,185,129,.5)] transition active:scale-[0.99]"
             >
               {submitting ? (
                 "Processing..."
@@ -227,7 +227,7 @@ export function AuthScreen({ onGuestAccess }: AuthScreenProps) {
         )}
 
         <div className="text-center text-[11px] text-zinc-500 flex items-center justify-center gap-1.5">
-          <ShieldCheck size={13} className="text-[#1F7A5B]" /> Supabase Encrypted Authentication
+          <ShieldCheck size={13} className="text-emerald-400" /> Supabase Encrypted Authentication
         </div>
       </div>
     </div>

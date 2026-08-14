@@ -12,6 +12,7 @@ export class SupabaseService {
       id: userId,
       name: profile.name,
       initials: profile.initials,
+      avatar_url: profile.avatarUrl || null,
       date_of_birth: profile.dateOfBirth,
       gender: profile.gender,
       height_cm: profile.heightCm === "" ? null : profile.heightCm,
@@ -40,13 +41,14 @@ export class SupabaseService {
       .from("user_profiles")
       .select("*")
       .eq("id", userId)
-      .single();
+      .maybeSingle();
 
     if (error || !data) return null;
 
     return {
       name: data.name || "",
       initials: data.initials || "U",
+      avatarUrl: data.avatar_url || "",
       dateOfBirth: data.date_of_birth || "",
       gender: data.gender || "prefer_not_to_say",
       heightCm: data.height_cm ?? "",

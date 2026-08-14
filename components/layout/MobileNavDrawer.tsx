@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { X, Sparkles } from "lucide-react";
 import { navigation } from "@/lib/navigation";
@@ -56,32 +57,31 @@ export function MobileNavDrawer() {
           fixed inset-y-0 left-0 z-50
           w-[85vw] max-w-[340px]
           flex flex-col
-          border-r border-white/10
-          bg-[#050816]/95 backdrop-blur-3xl
-          shadow-[0_20px_80px_rgba(0,0,0,0.8)]
+          border-r border-[var(--border)]
+          bg-[var(--card)] backdrop-blur-3xl
+          shadow-[0_20px_80px_rgba(0,0,0,0.5)]
           animate-in slide-in-from-left duration-300
         "
       >
         {/* Glow accent */}
-        <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[#1F7A5B]/20 to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[var(--primary)]/15 to-transparent pointer-events-none" />
 
         {/* Header with Logo and Close Button */}
         <div className="relative flex items-center justify-between p-6 pb-4">
           <div className="flex items-center gap-3">
-            <div
-              className="
-                flex h-12 w-12 items-center justify-center
-                rounded-2xl
-                bg-gradient-to-br from-[#1F7A5B] to-[#2A8F66]
-                text-lg font-bold text-white
-                shadow-lg shadow-[0_10px_30px_rgba(31,122,91,.3)]
-              "
-            >
-              A
+            <div className="relative h-11 w-11 flex-shrink-0">
+              <Image
+                src="/atlas-icon.png"
+                alt="Atlas icon"
+                width={44}
+                height={44}
+                className="object-contain drop-shadow-[0_0_12px_var(--primary-glow)]"
+                priority
+              />
             </div>
             <div>
-              <h2 className="text-2xl font-bold tracking-tight text-white">Atlas</h2>
-              <p className="text-xs text-zinc-400">Personal OS</p>
+              <h2 className="text-2xl font-extrabold font-heading tracking-tight text-[var(--text)]">Atlas</h2>
+              <p className="text-xs font-semibold uppercase tracking-wider text-[var(--primary)]">Personal OS</p>
             </div>
           </div>
 
@@ -89,8 +89,8 @@ export function MobileNavDrawer() {
             onClick={closeMobileMenu}
             className="
               flex h-10 w-10 items-center justify-center
-              rounded-2xl border border-white/10 bg-white/5
-              text-zinc-400 hover:text-white hover:bg-white/10
+              rounded-2xl border border-[var(--border)] bg-[var(--surface-2)]
+              text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--surface-hover)]
               transition-colors
             "
             aria-label="Close navigation menu"
@@ -100,14 +100,14 @@ export function MobileNavDrawer() {
         </div>
 
         {/* Divider */}
-        <div className="mx-6 h-px bg-white/10" />
+        <div className="mx-6 h-px bg-[var(--border)]" />
 
         {/* Section Title */}
         <div className="px-6 pt-4 pb-2 flex items-center justify-between">
-          <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
+          <span className="text-xs font-semibold uppercase tracking-wider text-[var(--text-tertiary)]">
             All Modules ({navigation.length})
           </span>
-          <Sparkles size={14} className="text-[#1F7A5B]" />
+          <Sparkles size={14} className="text-[var(--primary)]" />
         </div>
 
         {/* Scrollable Navigation List */}
@@ -127,22 +127,22 @@ export function MobileNavDrawer() {
                   transition-all duration-200
                   ${
                     active
-                      ? "bg-[#1F7A5B]/20 text-white border border-[#1F7A5B]/30 shadow-lg shadow-[0_10px_30px_rgba(31,122,91,.15)] font-semibold"
-                      : "text-zinc-400 hover:bg-white/5 hover:text-white"
+                      ? "bg-[var(--primary)]/20 text-[var(--text)] border border-[var(--primary)]/30 shadow-lg shadow-[0_10px_30px_rgba(16,185,129,.15)] font-bold"
+                      : "text-[var(--text-secondary)] hover:bg-[var(--surface-hover)] hover:text-[var(--text)]"
                   }
                 `}
               >
                 <div
                   className={`
                     flex h-9 w-9 items-center justify-center rounded-xl transition-transform duration-200 group-hover:scale-105
-                    ${active ? "bg-[#1F7A5B] text-white" : "bg-white/5 text-zinc-400 group-hover:text-white"}
+                    ${active ? "bg-[var(--primary)] text-white" : "bg-[var(--surface-2)] text-[var(--text-secondary)] group-hover:text-[var(--text)]"}
                   `}
                 >
                   <Icon size={18} />
                 </div>
                 <span className="flex-1 text-sm font-medium">{item.title}</span>
                 {active && (
-                  <span className="h-2 w-2 rounded-full bg-[#1F7A5B] shadow-[0_0_10px_#1F7A5B]" />
+                  <span className="h-2 w-2 rounded-full bg-[var(--primary)] shadow-[0_0_10px_var(--primary-glow)]" />
                 )}
               </Link>
             );
@@ -151,15 +151,15 @@ export function MobileNavDrawer() {
 
         {/* Bottom Productivity Widget */}
         <div className="p-6 pt-2">
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <p className="text-xs text-zinc-400">Productivity</p>
+          <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-2)] p-4">
+            <p className="text-xs font-semibold uppercase tracking-wider text-[var(--text-tertiary)]">Productivity</p>
             <div className="mt-1 flex items-baseline justify-between">
-              <h3 className="text-2xl font-bold text-white">82%</h3>
-              <span className="text-xs text-[#1F7A5B] font-medium">On Track</span>
+              <h3 className="text-2xl font-bold font-heading text-[var(--text)]">82%</h3>
+              <span className="text-xs text-[var(--primary)] font-semibold">On Track</span>
             </div>
-            <div className="mt-3 h-2 rounded-full bg-white/10 overflow-hidden">
+            <div className="mt-3 h-2 rounded-full bg-[var(--surface-3)] overflow-hidden">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-[#1F7A5B] to-[#2A8F66]"
+                className="h-full rounded-full bg-gradient-to-r from-[var(--primary)] via-teal-400 to-cyan-400 shadow-[0_0_10px_rgba(16,185,129,0.4)]"
                 style={{ width: "82%" }}
               />
             </div>

@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import { useTaskStore } from "@/stores/task.store";
+import { GlassCard } from "@/components/ui/GlassCard";
+import { EmptyState } from "@/components/common/EmptyState";
+import { SearchBar } from "@/components/common/SearchBar";
 
 import { TaskForm } from "./TaskForm";
 import { TaskItem } from "./TaskItem";
@@ -21,10 +23,7 @@ export function TaskList() {
   }, [load]);
 
   const [search, setSearch] = useState("");
-
-  const [filter, setFilter] = useState<
-    "all" | "active" | "completed"
-  >("all");
+  const [filter, setFilter] = useState<"all" | "active" | "completed">("all");
 
   const filteredTasks = tasks.filter((task) => {
     const matchesSearch = task.title
@@ -42,78 +41,69 @@ export function TaskList() {
   });
 
   return (
-    <div className="rounded-3xl border border-zinc-800 bg-zinc-900/60 p-8 shadow-xl backdrop-blur">
-      <div className="mb-8 flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold">
-            My Tasks
-          </h2>
-
-          <p className="text-sm text-zinc-400">
-            {filteredTasks.length} Task
-            {filteredTasks.length !== 1 ? "s" : ""}
-          </p>
-        </div>
-
-        <div className="flex gap-2">
-          {["all", "active", "completed"].map((value) => (
-            <button
-              key={value}
-              onClick={() =>
-                setFilter(
-                  value as
-                    | "all"
-                    | "active"
-                    | "completed"
-                )
-              }
-              className={`rounded-xl px-4 py-2 transition ${
-                filter === value
-                  ? "bg-blue-600 text-white"
-                  : "bg-zinc-800 hover:bg-zinc-700"
-              }`}
-            >
-              {value.charAt(0).toUpperCase() +
-                value.slice(1)}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <input
-        type="text"
-        placeholder="Search tasks..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        className="mb-6 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 outline-none transition focus:border-blue-500"
-      />
-
-      <div className="mb-8">
+    <div className="space-y-6">
+      {/* Create Task Form */}
+      <GlassCard className="p-6">
+        <h2 className="text-lg font-semibold font-heading text-[var(--text)] mb-4">
+          Add New Task
+        </h2>
         <TaskForm onAdd={createTask} />
-      </div>
+      </GlassCard>
 
-      {filteredTasks.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-zinc-700 py-16 text-center">
-          <h3 className="text-lg font-semibold text-white">
-            No tasks found
-          </h3>
+      {/* Task List Main Card */}
+      <GlassCard className="p-6 sm:p-8 space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 className="text-xl font-semibold font-heading text-[var(--text)]">
+              My Tasks
+            </h2>
+            <p className="text-sm text-[var(--text-secondary)] font-normal">
+              {filteredTasks.length} task{filteredTasks.length !== 1 ? "s" : ""}
+            </p>
+          </div>
 
-          <p className="mt-2 text-zinc-500">
-            Add a new task or change your search.
-          </p>
+          {/* Filter Pills */}
+          <div className="flex items-center gap-1.5 rounded-xl bg-[var(--surface-2,rgba(255,255,255,0.05))] p-1 border border-[var(--border)]">
+            {(["all", "active", "completed"] as const).map((value) => (
+              <button
+                key={value}
+                onClick={() => setFilter(value)}
+                className={`rounded-lg px-3.5 py-1.5 text-xs font-medium transition-all duration-200 capitalize ${
+                  filter === value
+                    ? "bg-emerald-500/20 text-emerald-500 border border-emerald-500/30 shadow-sm"
+                    : "text-[var(--text-secondary)] hover:text-[var(--text)]"
+                }`}
+              >
+                {value}
+              </button>
+            ))}
+          </div>
         </div>
-      ) : (
-        <div className="space-y-4">
-          {filteredTasks.map((task) => (
-            <TaskItem
-              key={task.id}
-              task={task}
-              onToggle={toggleTask}
-              onDelete={deleteTask}
-            />
-          ))}
-        </div>
-      )}
+
+        <SearchBar
+          value={search}
+          onChange={setSearch}
+          placeholder="Search tasks by title..."
+        />
+
+        {filteredTasks.length === 0 ? (
+          <EmptyState
+            title="No tasks found"
+            description="Add a new task above or adjust your search filter."
+          />
+        ) : (
+          <div className="space-y-3">
+            {filteredTasks.map((task) => (
+              <TaskItem
+                key={task.id}
+                task={task}
+                onToggle={toggleTask}
+                onDelete={deleteTask}
+              />
+            ))}
+          </div>
+        )}
+      </GlassCard>
     </div>
   );
 }

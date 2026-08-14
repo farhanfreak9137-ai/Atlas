@@ -1,23 +1,97 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChatMessage as ChatMessageType } from "@/types/chat";
 import { ChatMessage } from "./ChatMessage";
 import { ChatEmpty } from "./ChatEmpty";
+import { Sparkles } from "lucide-react";
 
 interface ChatContainerProps {
   messages: ChatMessageType[];
   isLoading: boolean;
+  onSelectPrompt?: (prompt: string) => void;
 }
 
-export function ChatContainer({ messages, isLoading }: ChatContainerProps) {
+// Rotating context-aware thinking labels
+const THINKING_LABELS = [
+  "Atlas AI is thinking",
+  "Checking your tasks",
+  "Analyzing your habits",
+  "Generating insights",
+  "Reviewing your goals",
+];
+
+function ThinkingIndicator() {
+  const [labelIdx, setLabelIdx] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setLabelIdx((i) => (i + 1) % THINKING_LABELS.length);
+    }, 2500);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <div className="flex gap-3 items-start animate-in fade-in slide-in-from-bottom-2">
+
+      {/* AI Avatar — pulse ring while thinking */}
+      <div
+        className="
+          h-8 w-8
+          rounded-full
+          flex-shrink-0
+          flex items-center justify-center
+          mt-1
+          bg-gradient-to-br from-emerald-500/30 to-teal-600/20
+          border border-emerald-500/40
+          text-emerald-400
+          avatar-thinking
+        "
+      >
+        <Sparkles size={14} className="animate-pulse" />
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <div
+          className="
+            glass
+            rounded-2xl rounded-tl-none
+            border border-[var(--border)]
+            px-4 py-3
+            shadow-md
+            flex items-center gap-3
+          "
+        >
+          {/* Cycling label */}
+          <span
+            key={labelIdx}
+            className="text-xs font-semibold text-[var(--primary)] animate-in fade-in duration-300"
+          >
+            {THINKING_LABELS[labelIdx]}
+          </span>
+
+          {/* Waveform bars — replacing generic bouncing dots */}
+          <div className="flex items-end gap-[3px] h-4">
+            <div className="thinking-bar w-[3px] h-4 rounded-full bg-[var(--primary)]/70" />
+            <div className="thinking-bar w-[3px] h-4 rounded-full bg-[var(--primary)]/70" />
+            <div className="thinking-bar w-[3px] h-4 rounded-full bg-[var(--primary)]/70" />
+            <div className="thinking-bar w-[3px] h-4 rounded-full bg-[var(--primary)]/70" />
+            <div className="thinking-bar w-[3px] h-4 rounded-full bg-[var(--primary)]/70" />
+          </div>
+        </div>
+      </div>
+
+    </div>
+  );
+}
+
+export function ChatContainer({ messages, isLoading, onSelectPrompt }: ChatContainerProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = (): void => {
     const container = containerRef.current as HTMLDivElement | null;
     if (container) {
-      // scroll the chat container itself to avoid scrolling the main page/navbar
       container.scrollTo({ top: container.scrollHeight, behavior: "smooth" });
     } else {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -29,9 +103,9 @@ export function ChatContainer({ messages, isLoading }: ChatContainerProps) {
   }, [messages, isLoading]);
 
   return (
-    <div ref={containerRef} className="flex flex-col gap-6 flex-1 overflow-y-auto pb-6">
+    <div ref={containerRef} className="flex flex-col gap-5 flex-1 overflow-y-auto pb-6 pr-1 custom-scrollbar">
       {messages.length === 0 ? (
-        <ChatEmpty />
+        <ChatEmpty onSelectPrompt={onSelectPrompt} />
       ) : (
         <>
           {messages.map((message) => (
@@ -41,29 +115,7 @@ export function ChatContainer({ messages, isLoading }: ChatContainerProps) {
             />
           ))}
 
-          {isLoading && (
-            <div className="flex gap-4">
-              <div className="h-8 w-8 rounded-full bg-[#1F7A5B]/30 flex items-center justify-center mt-1">
-                <div className="w-2 h-2 bg-[#1F7A5B] rounded-full animate-pulse" />
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <div className="glass rounded-2xl rounded-bl-none border border-white/10 px-4 py-3">
-                  <div className="flex gap-2">
-                    <div className="w-2 h-2 bg-white/40 rounded-full animate-bounce" />
-                    <div
-                      className="w-2 h-2 bg-white/40 rounded-full animate-bounce"
-                      style={{ animationDelay: "0.2s" }}
-                    />
-                    <div
-                      className="w-2 h-2 bg-white/40 rounded-full animate-bounce"
-                      style={{ animationDelay: "0.4s" }}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
+          {isLoading && <ThinkingIndicator />}
 
           <div ref={messagesEndRef} />
         </>

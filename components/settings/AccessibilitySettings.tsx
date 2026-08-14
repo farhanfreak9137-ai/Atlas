@@ -29,8 +29,8 @@ export default function AccessibilitySettings({
         <GlassCard className="!hover:-translate-y-0">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <p className="font-semibold">Reduce Motion</p>
-              <p className="mt-1 text-sm text-zinc-400">
+              <p className="font-semibold text-[var(--text)]">Reduce Motion</p>
+              <p className="mt-1 text-sm text-[var(--text-secondary)]">
                 Disables all animations and transitions throughout the app.
                 Good for motion sensitivity or performance on slow devices.
               </p>
@@ -44,7 +44,7 @@ export default function AccessibilitySettings({
                 h-7 w-12 rounded-full border transition-all duration-300
                 ${value.reducedMotion
                   ? "bg-[var(--primary)] border-[var(--primary)]"
-                  : "bg-white/10 border-white/20"
+                  : "bg-[var(--surface-3)] border-[var(--border)]"
                 }
               `}
               aria-pressed={value.reducedMotion}
@@ -62,8 +62,8 @@ export default function AccessibilitySettings({
 
           <div className={`mt-4 rounded-xl p-3 text-xs transition-all ${
             value.reducedMotion
-              ? "bg-[var(--primary)]/10 text-zinc-300 border border-[var(--primary)]/20"
-              : "bg-white/5 text-zinc-500"
+              ? "bg-[var(--primary)]/10 text-[var(--primary)] border border-[var(--primary)]/20 font-medium"
+              : "bg-[var(--surface-2)] text-[var(--text-tertiary)]"
           }`}>
             {value.reducedMotion
               ? "✓ All animations are disabled"
@@ -73,8 +73,8 @@ export default function AccessibilitySettings({
 
         {/* Contrast Mode */}
         <GlassCard className="!hover:-translate-y-0">
-          <p className="font-semibold mb-1">Contrast Mode</p>
-          <p className="text-sm text-zinc-400 mb-4">
+          <p className="font-semibold text-[var(--text)] mb-1">Contrast Mode</p>
+          <p className="text-sm text-[var(--text-secondary)] mb-4">
             High contrast improves text readability by boosting border and text visibility.
           </p>
           <div className="flex flex-col gap-2">

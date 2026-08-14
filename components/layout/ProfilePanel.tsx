@@ -20,6 +20,11 @@ import {
   ShieldCheck,
   Lock,
   AlertCircle,
+  Camera,
+  Upload,
+  Trash2,
+  CameraOff,
+  FileText,
 } from "lucide-react";
 import {
   useProfileStore,
@@ -55,6 +60,29 @@ const GENDER_LABELS: Record<Gender, string> = {
   prefer_not_to_say: "Prefer not to say",
 };
 
+const PRESET_AVATARS = [
+  {
+    id: "emerald",
+    name: "Emerald Cyber",
+    url: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'><defs><linearGradient id='g1' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%2310B981'/><stop offset='100%' stop-color='%2306B6D4'/></linearGradient></defs><rect width='200' height='200' fill='%23060913'/><circle cx='100' cy='100' r='75' fill='url(%23g1)' opacity='0.85'/><path d='M100 45 L145 135 L55 135 Z' fill='%23ffffff' opacity='0.9'/></svg>",
+  },
+  {
+    id: "cyan",
+    name: "Cyan Orb",
+    url: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'><defs><linearGradient id='g2' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%2306B6D4'/><stop offset='100%' stop-color='%233B82F6'/></linearGradient></defs><rect width='200' height='200' fill='%23060913'/><circle cx='100' cy='80' r='40' fill='url(%23g2)'/><path d='M30 180 C30 135 70 125 100 125 C130 125 170 135 170 180 Z' fill='url(%23g2)' opacity='0.85'/></svg>",
+  },
+  {
+    id: "purple",
+    name: "Purple Pulse",
+    url: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'><defs><linearGradient id='g3' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23A855F7'/><stop offset='100%' stop-color='%23EC4899'/></linearGradient></defs><rect width='200' height='200' fill='%23060913'/><circle cx='100' cy='100' r='60' fill='none' stroke='url(%23g3)' stroke-width='16'/><circle cx='100' cy='100' r='25' fill='url(%23g3)'/></svg>",
+  },
+  {
+    id: "gold",
+    name: "Solar Gold",
+    url: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'><defs><linearGradient id='g4' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23F59E0B'/><stop offset='100%' stop-color='%23EF4444'/></linearGradient></defs><rect width='200' height='200' fill='%23060913'/><polygon points='100,30 125,80 180,80 135,115 150,170 100,135 50,170 65,115 20,80 75,80' fill='url(%23g4)'/></svg>",
+  },
+];
+
 function calculateAge(dob: string): number | null {
   if (!dob) return null;
   const birth = new Date(dob);
@@ -89,8 +117,8 @@ interface FieldProps {
 function Field({ label, icon, children }: FieldProps) {
   return (
     <div className="space-y-1.5">
-      <label className="flex items-center gap-2 text-xs font-medium text-zinc-400 uppercase tracking-wider">
-        <span className="text-[#1F7A5B]">{icon}</span>
+      <label className="flex items-center gap-2 text-xs font-medium text-[var(--text-secondary)] uppercase tracking-wider">
+        <span className="text-[var(--primary)]">{icon}</span>
         {label}
       </label>
       {children}
@@ -99,19 +127,19 @@ function Field({ label, icon, children }: FieldProps) {
 }
 
 const inputClass = `
-  w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5
-  text-sm text-white placeholder-zinc-500
-  focus:outline-none focus:border-[#1F7A5B]/50 focus:bg-white/8
+  w-full rounded-xl border border-[var(--border)] bg-[var(--surface-2,rgba(255,255,255,0.05))] px-4 py-2.5
+  text-sm text-[var(--text)] placeholder:text-[var(--text-tertiary)]
+  focus:outline-none focus:border-[var(--primary)]/50
   transition-all duration-200
 `;
 
 const selectClass = `
-  w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5
-  text-sm text-white
-  focus:outline-none focus:border-[#1F7A5B]/50
+  w-full rounded-xl border border-[var(--border)] bg-[var(--surface-2,rgba(255,255,255,0.05))] px-4 py-2.5
+  text-sm text-[var(--text)]
+  focus:outline-none focus:border-[var(--primary)]/50
   transition-all duration-200
   appearance-none
-  [&>option]:bg-zinc-900
+  [&>option]:bg-[var(--popover)] [&>option]:text-[var(--popover-foreground)]
 `;
 
 export function ProfilePanel() {
@@ -129,8 +157,49 @@ export function ProfilePanel() {
   } = useAuthStore();
 
   const panelRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [saved, setSaved] = useState(false);
   const [local, setLocal] = useState<UserProfile>(profile);
+
+  // Handle custom image file upload
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const maxDim = 320;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > maxDim) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          }
+        } else {
+          if (height > maxDim) {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, width, height);
+          const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.85);
+          set("avatarUrl", compressedDataUrl);
+        }
+      };
+      img.src = event.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  };
 
   // Auth form state
   const [authMode, setAuthMode] = useState<"login" | "signup">("login");
@@ -284,45 +353,75 @@ export function ProfilePanel() {
           relative z-10
           h-full w-full max-w-[440px]
           flex flex-col
-          border-l border-white/10
-          bg-[#050816]/98 backdrop-blur-3xl
-          shadow-[-20px_0_80px_rgba(0,0,0,0.8)]
+          border-l border-[var(--border)]
+          bg-[var(--card)] backdrop-blur-3xl
+          shadow-[-20px_0_80px_rgba(0,0,0,0.4)]
           animate-in slide-in-from-right duration-300
           overflow-hidden
         "
       >
         {/* Top Glow */}
-        <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-[#1F7A5B]/15 to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-[var(--primary)]/12 to-transparent pointer-events-none" />
 
         {/* Header */}
         <div className="relative flex items-center justify-between px-6 pt-6 pb-4 shrink-0">
           <div className="flex items-center gap-4">
+            {/* Hidden File Input */}
+            <input
+              type="file"
+              ref={fileInputRef}
+              accept="image/*"
+              className="hidden"
+              onChange={handleFileChange}
+            />
+
             {/* Avatar */}
-            <div className="relative">
-              <div
+            <div className="relative group">
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                title="Change profile picture"
                 className="
-                flex h-14 w-14 items-center justify-center
-                rounded-2xl
-                bg-gradient-to-br from-[#1F7A5B] to-[#2A8F66]
-                text-xl font-bold text-white
-                shadow-lg shadow-[0_10px_30px_rgba(31,122,91,.35)]
-              "
+                  relative flex h-14 w-14 items-center justify-center
+                  rounded-2xl overflow-hidden
+                  bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500
+                  text-xl font-bold text-white
+                  shadow-lg shadow-[0_10px_30px_rgba(16,185,129,.4)]
+                  border border-white/20
+                  focus:outline-none focus:ring-2 focus:ring-emerald-400
+                  transition-all duration-200
+                "
               >
-                {profile.initials || "U"}
-              </div>
+                {local.avatarUrl ? (
+                  <img
+                    src={local.avatarUrl}
+                    alt={local.name || "Profile Picture"}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <span>{local.initials || profile.initials || "U"}</span>
+                )}
+
+                {/* Hover Camera Overlay */}
+                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center text-white">
+                  <Camera size={18} />
+                </div>
+              </button>
+
+              {/* Status Badge */}
               <div
-                className={`absolute -bottom-1 -right-1 h-4 w-4 rounded-full border-2 border-[#050816] ${
+                className={`absolute -bottom-1 -right-1 h-4 w-4 rounded-full border-2 border-[var(--background)] pointer-events-none ${
                   user ? "bg-emerald-400 shadow-[0_0_8px_#34d399]" : "bg-zinc-500"
                 }`}
               />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-white leading-tight">
+              <h2 className="text-xl font-bold text-[var(--text)] leading-tight">
                 {profile.name || "Your Profile"}
               </h2>
-              <p className="text-xs text-zinc-400 flex items-center gap-1.5 mt-0.5">
+              <p className="text-xs text-[var(--text-secondary)] flex items-center gap-1.5 mt-0.5">
                 {user ? (
-                  <span className="text-emerald-400 font-medium flex items-center gap-1">
+                  <span className="text-[var(--primary)] font-medium flex items-center gap-1">
                     <ShieldCheck size={13} /> Supabase Sync Active
                   </span>
                 ) : (
@@ -336,8 +435,8 @@ export function ProfilePanel() {
             onClick={closeProfile}
             className="
               flex h-9 w-9 items-center justify-center
-              rounded-xl border border-white/10 bg-white/5
-              text-zinc-400 hover:text-white hover:bg-white/10
+              rounded-xl border border-[var(--border)] bg-[var(--surface-2)]
+              text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--surface-hover)]
               transition-all
             "
             aria-label="Close profile"
@@ -348,16 +447,16 @@ export function ProfilePanel() {
 
         {/* BMI Quick-stat */}
         {bmi && (
-          <div className="mx-6 mb-2 rounded-2xl border border-white/8 bg-white/[0.04] px-4 py-3 flex items-center justify-between">
-            <div className="text-xs text-zinc-400">Body Mass Index</div>
+          <div className="mx-6 mb-2 rounded-2xl border border-[var(--border)] bg-[var(--surface-2)] px-4 py-3 flex items-center justify-between">
+            <div className="text-xs text-[var(--text-secondary)] font-medium">Body Mass Index</div>
             <div className="flex items-baseline gap-2">
-              <span className="text-2xl font-bold text-white">{bmi}</span>
+              <span className="text-2xl font-bold text-[var(--text)]">{bmi}</span>
               <span className={`text-xs font-semibold ${bmiCategory.color}`}>{bmiCategory.label}</span>
             </div>
           </div>
         )}
 
-        <div className="mx-6 h-px bg-white/8 mb-4 shrink-0" />
+        <div className="mx-6 h-px bg-[var(--border)] mb-4 shrink-0" />
 
         {/* Scrollable Container */}
         <div className="flex-1 overflow-y-auto px-6 pb-6 space-y-6 no-scrollbar">
@@ -366,7 +465,7 @@ export function ProfilePanel() {
           <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 space-y-3.5">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold uppercase tracking-wider text-zinc-300 flex items-center gap-1.5">
-                <Lock size={14} className="text-[#1F7A5B]" />
+                <Lock size={14} className="text-emerald-400" />
                 Supabase Auth & Sync
               </span>
               <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
@@ -418,7 +517,7 @@ export function ProfilePanel() {
                     }}
                     className={`flex-1 py-1.5 text-xs font-medium rounded-lg transition ${
                       authMode === "login"
-                        ? "bg-[#1F7A5B] text-white shadow"
+                        ? "bg-emerald-500 text-white shadow"
                         : "text-zinc-400 hover:text-white"
                     }`}
                   >
@@ -432,7 +531,7 @@ export function ProfilePanel() {
                     }}
                     className={`flex-1 py-1.5 text-xs font-medium rounded-lg transition ${
                       authMode === "signup"
-                        ? "bg-[#1F7A5B] text-white shadow"
+                        ? "bg-emerald-500 text-white shadow"
                         : "text-zinc-400 hover:text-white"
                     }`}
                   >
@@ -466,7 +565,7 @@ export function ProfilePanel() {
                   <button
                     type="submit"
                     disabled={authSubmitting}
-                    className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#1F7A5B] py-2.5 text-xs font-semibold text-white hover:bg-[#2A8F66] transition shadow-md"
+                    className="w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 py-2.5 text-xs font-semibold text-white hover:from-emerald-400 hover:to-teal-400 transition shadow-md"
                   >
                     <LogIn size={14} />
                     {authSubmitting
@@ -511,6 +610,76 @@ export function ProfilePanel() {
                 </button>
               </div>
             )}
+          </div>
+
+          {/* === Profile Picture Management === */}
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 space-y-3.5">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold uppercase tracking-wider text-zinc-300 flex items-center gap-1.5">
+                <Camera size={14} className="text-emerald-400" />
+                Profile Picture
+              </span>
+              {local.avatarUrl && (
+                <button
+                  type="button"
+                  onClick={() => set("avatarUrl", "")}
+                  className="text-[11px] text-red-400 hover:text-red-300 flex items-center gap-1 transition font-medium"
+                >
+                  <Trash2 size={12} />
+                  Remove
+                </button>
+              )}
+            </div>
+
+            <div className="flex items-center gap-4">
+              <div className="relative h-16 w-16 rounded-2xl overflow-hidden bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 flex items-center justify-center text-2xl font-bold text-white shadow-lg border border-white/20 shrink-0">
+                {local.avatarUrl ? (
+                  <img
+                    src={local.avatarUrl}
+                    alt={local.name || "Avatar"}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <span>{local.initials || "U"}</span>
+                )}
+              </div>
+
+              <div className="flex-1 space-y-2">
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="w-full flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 px-3 py-2 text-xs font-medium text-white transition shadow-sm"
+                >
+                  <Upload size={14} className="text-emerald-400" />
+                  Upload Custom Photo
+                </button>
+                <p className="text-[11px] text-zinc-400">
+                  Supports PNG, JPG, or WebP format.
+                </p>
+              </div>
+            </div>
+
+            {/* Presets row */}
+            <div className="pt-2 border-t border-white/5">
+              <p className="text-[10px] uppercase font-semibold tracking-wider text-zinc-400 mb-2">Preset Avatars</p>
+              <div className="grid grid-cols-4 gap-2">
+                {PRESET_AVATARS.map((preset) => (
+                  <button
+                    key={preset.id}
+                    type="button"
+                    onClick={() => set("avatarUrl", preset.url)}
+                    className={`h-11 rounded-xl overflow-hidden border transition relative ${
+                      local.avatarUrl === preset.url
+                        ? "border-emerald-400 ring-2 ring-emerald-400/40"
+                        : "border-white/10 hover:border-white/30"
+                    }`}
+                    title={preset.name}
+                  >
+                    <img src={preset.url} alt={preset.name} className="h-full w-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* === Identity === */}
@@ -633,7 +802,7 @@ export function ProfilePanel() {
                         rounded-xl border px-3 py-2 text-xs font-medium text-left transition-all duration-200
                         ${
                           local.fitnessGoal === v
-                            ? "border-[#1F7A5B]/60 bg-[#1F7A5B]/15 text-white shadow-[0_0_15px_rgba(31,122,91,.2)]"
+                            ? "border-emerald-500/60 bg-emerald-500/15 text-white shadow-[0_0_15px_rgba(16,185,129,.2)]"
                             : "border-white/8 bg-white/[0.03] text-zinc-400 hover:border-white/15 hover:text-zinc-200"
                         }
                       `}
@@ -650,6 +819,16 @@ export function ProfilePanel() {
           <div>
             <p className="mb-3 text-[10px] font-bold uppercase tracking-widest text-zinc-500">About You</p>
             <div className="space-y-3">
+              <Field label="Personal Biography & Context" icon={<FileText size={12} />}>
+                <textarea
+                  rows={3}
+                  className={`${inputClass} resize-none`}
+                  placeholder="Share details about yourself, background, preferences, or goals for Atlas AI to remember..."
+                  value={local.bio || ""}
+                  onChange={(e) => set("bio", e.target.value)}
+                />
+              </Field>
+
               <Field label="Occupation" icon={<Briefcase size={12} />}>
                 <input
                   className={inputClass}
@@ -681,7 +860,7 @@ export function ProfilePanel() {
               ${
                 saved
                   ? "bg-green-600/20 border border-green-500/40 text-green-400"
-                  : "bg-gradient-to-r from-[#1F7A5B] to-[#2A8F66] text-white shadow-lg shadow-[0_8px_30px_rgba(31,122,91,.35)] hover:shadow-[0_12px_40px_rgba(31,122,91,.5)] hover:-translate-y-0.5 active:translate-y-0"
+                  : "bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg shadow-[0_8px_30px_rgba(16,185,129,.35)] hover:shadow-[0_12px_40px_rgba(16,185,129,.5)] hover:-translate-y-0.5 active:translate-y-0"
               }
             `}
           >

@@ -1,5 +1,5 @@
-import { Trash2 } from "lucide-react";
-
+import { Trash2, Flame, Check } from "lucide-react";
+import { GlassCard } from "@/components/ui/GlassCard";
 import { Habit } from "@/types/habit";
 
 interface HabitItemProps {
@@ -14,72 +14,72 @@ export function HabitItem({
   onDelete,
 }: HabitItemProps) {
   const progress = Math.min(
-  100,
-  (habit.progress / habit.target) * 100
-);
+    100,
+    (habit.progress / habit.target) * 100
+  );
 
   return (
-    <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5 transition hover:border-blue-500">
-      <div className="flex items-start justify-between">
-        <div className="flex gap-4">
-          <div className="text-3xl">
+    <GlassCard className="p-5 flex flex-col justify-between space-y-4">
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex items-center gap-3.5">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--surface-2,rgba(255,255,255,0.05))] border border-[var(--border)] text-2xl shadow-inner">
             {habit.icon}
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-white">
+            <h3 className="text-base font-semibold font-heading text-[var(--text)]">
               {habit.title}
             </h3>
 
-            <p className="text-sm text-zinc-400">
-              {habit.progress} / {habit.target}
-            </p>
+            <div className="mt-1 flex items-center gap-3">
+              <span className="text-xs font-medium text-[var(--text-secondary)]">
+                {habit.progress} / {habit.target} daily
+              </span>
 
-            <p className="mt-1 text-sm text-orange-400">
-              🔥 {habit.streak} day streak
-            </p>
+              <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 text-[11px] font-medium text-amber-500">
+                <Flame size={12} className="text-amber-500 fill-amber-500/30" />
+                {habit.streak} day streak
+              </span>
+            </div>
           </div>
         </div>
 
         <button
           onClick={() => onDelete(habit.id)}
-          className="rounded-lg p-2 text-zinc-500 transition hover:bg-red-500/10 hover:text-red-500"
+          className="rounded-xl p-2 text-[var(--text-tertiary)] transition hover:bg-rose-500/10 hover:text-rose-400"
+          aria-label="Delete habit"
         >
-          <Trash2 size={18} />
+          <Trash2 size={16} />
         </button>
       </div>
 
-      <div className="mt-5 h-2 overflow-hidden rounded-full bg-zinc-800">
-        <div
-          className={`h-full rounded-full transition-all duration-300 ${
-  habit.color === "green"
-    ? "bg-green-500"
-    : habit.color === "red"
-    ? "bg-red-500"
-    : habit.color === "yellow"
-    ? "bg-yellow-500"
-    : habit.color === "purple"
-    ? "bg-purple-500"
-    : "bg-blue-500"
-}`}
-          style={{
-            width: `${progress}%`,
-          }}
-        />
+      {/* Progress Bar */}
+      <div className="space-y-1.5">
+        <div className="h-2 overflow-hidden rounded-full bg-[var(--surface-3,rgba(255,255,255,0.1))]">
+          <div
+            className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-cyan-400 shadow-[0_0_10px_rgba(16,185,129,0.4)] transition-all duration-300"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
       </div>
 
+      {/* Action button */}
       <button
         onClick={() => onToggle(habit.id)}
-        className={`mt-5 w-full rounded-xl py-3 font-medium transition ${
+        className={`w-full flex items-center justify-center gap-2 rounded-xl py-2.5 text-xs font-semibold transition-all duration-200 ${
           habit.completedToday
-            ? "bg-green-600 hover:bg-green-500"
-            : "bg-blue-600 hover:bg-blue-500"
+            ? "bg-emerald-500/20 border border-emerald-500/40 text-emerald-500"
+            : "bg-emerald-600 hover:bg-emerald-500 text-white shadow-sm"
         }`}
       >
-        {habit.completedToday
-          ? "Completed Today ✅"
-          : "Mark Complete"}
+        {habit.completedToday ? (
+          <>
+            <Check size={15} /> Completed Today
+          </>
+        ) : (
+          "Mark Complete"
+        )}
       </button>
-    </div>
+    </GlassCard>
   );
 }

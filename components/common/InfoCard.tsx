@@ -24,13 +24,15 @@ export function InfoCard({
     >
       <div className="flex items-start justify-between">
 
-        <div className="space-y-3">
+        <div className="space-y-1.5">
 
-          <p className="text-sm font-medium text-zinc-400">
+          <p className="text-xs font-semibold uppercase tracking-widest text-[var(--text-tertiary,#64748b)]">
             {title}
           </p>
 
-          <h3 className="text-3xl font-bold tracking-tight text-white">
+          <h3 className="text-2xl sm:text-3xl font-bold tracking-display tabular-nums text-[var(--text)] font-heading group-hover:text-[var(--primary)]"
+            style={{ transition: "color 200ms ease" }}
+          >
             {value}
           </h3>
 
@@ -38,18 +40,18 @@ export function InfoCard({
 
         <div
           className="
-            flex h-14 w-14 items-center justify-center
-            rounded-2xl
-            bg-[#1F7A5B]/10
-            text-[#1F7A5B]
+            flex h-11 w-11 items-center justify-center
+            rounded-xl
+            bg-[var(--primary)]/10
+            border border-[var(--primary)]/20
+            text-[var(--primary)]
+            shadow-[0_0_12px_rgba(16,185,129,0.08)]
 
-            transition-all
-            duration-300
-
-            group-hover:scale-110
-            group-hover:bg-[#1F7A5B]/20
-            group-hover:text-[#2A8F66]
+            group-hover:scale-105
+            group-hover:bg-[var(--primary)]/15
+            group-hover:border-[var(--primary)]/30
           "
+          style={{ transition: "transform 200ms ease, background-color 200ms ease, border-color 200ms ease" }}
         >
           {icon}
         </div>

@@ -11,7 +11,7 @@ export function PrimaryButton({
   return (
     <button
       {...props}
-      className={`rounded-xl bg-[#1F7A5B] px-5 py-3 font-medium text-white transition hover:bg-[#2A8F66] disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+      className={`rounded-xl bg-[var(--primary)] hover:bg-[var(--primary-hover)] px-5 py-2.5 font-medium text-white shadow-sm shadow-[var(--primary-glow)] transition-all duration-200 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
     >
       {children}
     </button>

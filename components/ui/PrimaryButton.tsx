@@ -13,21 +13,24 @@ export function PrimaryButton({
       {...props}
       className={cn(
         `
-        rounded-2xl
-        bg-[#1F7A5B]
+        rounded-xl
+        bg-[var(--primary)]
         px-5
-        py-3
+        py-2.5
 
         font-medium
         text-white
+        shadow-sm
+        shadow-[var(--primary-glow)]
 
         transition-all
-        duration-300
+        duration-200
 
-        hover:scale-[1.02]
-        hover:bg-[#2A8F66]
+        hover:bg-[var(--primary-hover)]
 
-        active:scale-[0.98]
+        active:scale-[0.99]
+        disabled:opacity-50
+        disabled:cursor-not-allowed
         `,
         className
       )}

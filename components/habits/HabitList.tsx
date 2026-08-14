@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 
 import { useHabitStore } from "@/stores/habit.store";
+import { EmptyState } from "@/components/common/EmptyState";
 
 import { HabitForm } from "./HabitForm";
 import { HabitItem } from "./HabitItem";
@@ -25,17 +26,12 @@ export function HabitList() {
       <HabitForm onAdd={create} />
 
       {habits.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-zinc-700 py-16 text-center">
-          <h3 className="text-xl font-semibold text-white">
-            No habits yet
-          </h3>
-
-          <p className="mt-2 text-zinc-500">
-            Create your first habit above.
-          </p>
-        </div>
+        <EmptyState
+          title="No habits yet"
+          description="Create your first habit above to track your daily progress."
+        />
       ) : (
-        <div className="grid gap-4 lg:grid-cols-2">
+        <div className="grid gap-4 md:grid-cols-2">
           {habits.map((habit) => (
             <HabitItem
               key={habit.id}

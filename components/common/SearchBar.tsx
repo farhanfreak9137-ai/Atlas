@@ -1,3 +1,5 @@
+import { Search } from "lucide-react";
+
 interface SearchBarProps {
   value: string;
   onChange: (value: string) => void;
@@ -10,11 +12,14 @@ export function SearchBar({
   placeholder = "Search...",
 }: SearchBarProps) {
   return (
-    <input
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      placeholder={placeholder}
-      className="w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 outline-none transition focus:border-blue-500"
-    />
+    <div className="relative w-full">
+      <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-tertiary)]" />
+      <input
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface-2,rgba(255,255,255,0.04))] pl-11 pr-4 py-3 text-sm text-[var(--text)] placeholder:text-[var(--text-tertiary)] outline-none transition-all duration-200 focus:border-[var(--primary)]/50"
+      />
+    </div>
   );
 }

@@ -65,18 +65,18 @@ export function MobileBottomNav() {
                 transition-all duration-200
                 ${
                   active
-                    ? "bg-[#1F7A5B]/25 text-white border border-[#1F7A5B]/40 shadow-lg shadow-[0_4px_15px_rgba(31,122,91,.4)]"
-                    : "text-zinc-400 hover:text-white hover:bg-white/5"
+                    ? "bg-emerald-500/20 text-white border border-emerald-500/30 shadow-lg shadow-[0_4px_15px_rgba(16,185,129,.3)]"
+                    : "text-slate-400 hover:text-white hover:bg-white/5"
                 }
               `}
             >
               <div className="relative flex items-center justify-center">
-                <Icon size={19} className={active ? "text-[#1F7A5B]" : "text-zinc-400"} />
+                <Icon size={19} className={active ? "text-emerald-400" : "text-slate-400"} />
                 {active && (
-                  <span className="absolute -top-1 -right-1 h-1.5 w-1.5 rounded-full bg-[#1F7A5B] shadow-[0_0_8px_#1F7A5B]" />
+                  <span className="absolute -top-1 -right-1 h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#10B981]" />
                 )}
               </div>
-              <span className={`text-xs whitespace-nowrap ${active ? "font-semibold text-white" : "font-medium"}`}>
+              <span className={`text-xs whitespace-nowrap ${active ? "font-bold text-white" : "font-medium"}`}>
                 {item.title}
               </span>
             </Link>
@@ -93,12 +93,12 @@ export function MobileBottomNav() {
           border border-white/10
           bg-white/5 hover:bg-white/10
           px-3.5 py-2
-          text-zinc-300 hover:text-white
+          text-slate-300 hover:text-white
           transition-all duration-200
         "
         aria-label="Open menu drawer"
       >
-        <Menu size={19} className="text-[#1F7A5B]" />
+        <Menu size={19} className="text-emerald-400" />
         <span className="text-xs font-semibold whitespace-nowrap">Menu</span>
       </button>
     </nav>

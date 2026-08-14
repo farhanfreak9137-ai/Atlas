@@ -1,27 +1,27 @@
 export const theme = {
   colors: {
-    background: "#050816",
-    backgroundSecondary: "#0B1120",
+    background: "#060913",
+    backgroundSecondary: "#0A1120",
 
-    surface: "rgba(17,24,39,.55)",
-    surfaceHover: "rgba(30,41,59,.65)",
+    surface: "rgba(15,23,42,.65)",
+    surfaceHover: "rgba(30,41,59,.75)",
 
-    glass: "rgba(31,122,91,.06)",
-    glassStrong: "rgba(31,122,91,.10)",
+    glass: "rgba(16,185,129,.05)",
+    glassStrong: "rgba(16,185,129,.12)",
 
-    border: "rgba(31,122,91,.08)",
+    border: "rgba(255,255,255,.10)",
 
-    primary: "#1F7A5B",
-    primaryHover: "#2A8F66",
+    primary: "#10B981",
+    primaryHover: "#059669",
 
-    cyan: "#2DD4BF",
-    purple: "#8B5CF6",
+    cyan: "#06B6D4",
+    purple: "#A855F7",
 
-    success: "#22C55E",
+    success: "#10B981",
     warning: "#F59E0B",
     danger: "#EF4444",
 
-    text: "#FFFFFF",
+    text: "#F8FAFC",
     textSecondary: "#94A3B8",
   },
 

@@ -14,12 +14,12 @@ export function Section({
   return (
     <section className="space-y-5">
       <div>
-        <h2 className="text-2xl font-bold text-white">
+        <h2 className="text-2xl font-bold font-heading text-[var(--text)]">
           {title}
         </h2>
 
         {subtitle && (
-          <p className="mt-1 text-sm text-zinc-400">
+          <p className="mt-1 text-sm text-[var(--text-secondary)]">
             {subtitle}
           </p>
         )}

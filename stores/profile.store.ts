@@ -11,8 +11,10 @@ export interface UserProfile {
   // Identity
   name: string;
   initials: string;
+  avatarUrl?: string;        // Base64 data URL or remote image URL
   dateOfBirth: string;       // ISO date string "YYYY-MM-DD"
   gender: Gender;
+  bio?: string;              // Personal biography, background & interests
 
   // Physical
   heightCm: number | "";     // cm
@@ -39,8 +41,10 @@ interface ProfileStore {
 const defaultProfile: UserProfile = {
   name: "Farhan",
   initials: "F",
+  avatarUrl: "",
   dateOfBirth: "",
   gender: "prefer_not_to_say",
+  bio: "",
   heightCm: "",
   weightKg: "",
   activityLevel: "moderate",

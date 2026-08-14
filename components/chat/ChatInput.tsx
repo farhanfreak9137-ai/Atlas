@@ -51,7 +51,7 @@ export function ChatInput({ onSend, isLoading }: ChatInputProps) {
       onSubmit={handleSubmit}
       className="flex gap-3 items-end"
     >
-      <div className="flex-1 glass rounded-2xl border border-white/10 px-4 py-3 backdrop-blur-xl">
+      <div className="flex-1 rounded-2xl border border-[var(--border)] bg-[var(--card)] px-4 py-3 backdrop-blur-xl shadow-md transition-colors duration-200">
         <textarea
           ref={textareaRef}
           value={message}
@@ -64,8 +64,8 @@ export function ChatInput({ onSend, isLoading }: ChatInputProps) {
             w-full
             resize-none
             bg-transparent
-            text-white
-            placeholder:text-zinc-500
+            text-[var(--text)]
+            placeholder:text-[var(--text-tertiary)]
             outline-none
             text-sm
             leading-relaxed

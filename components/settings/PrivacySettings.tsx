@@ -54,8 +54,8 @@ export default function PrivacySettings({
 
         {/* Auto-Lock */}
         <GlassCard className="!hover:-translate-y-0">
-          <p className="text-sm font-semibold text-zinc-400 mb-1">Screen Lock</p>
-          <p className="text-xs text-zinc-500 mb-4">
+          <p className="text-sm font-semibold text-[var(--text-secondary)] mb-1">Screen Lock</p>
+          <p className="text-xs text-[var(--text-tertiary)] mb-4">
             Automatically lock Atlas after a period of inactivity.
           </p>
           <div className="flex flex-wrap gap-2">
@@ -73,8 +73,8 @@ export default function PrivacySettings({
 
         {/* Data Retention */}
         <GlassCard className="!hover:-translate-y-0">
-          <p className="text-sm font-semibold text-zinc-400 mb-1">Data Retention</p>
-          <p className="text-xs text-zinc-500 mb-4">
+          <p className="text-sm font-semibold text-[var(--text-secondary)] mb-1">Data Retention</p>
+          <p className="text-xs text-[var(--text-tertiary)] mb-4">
             How long should Atlas keep your activity history?
           </p>
           <div className="flex flex-col gap-2">
@@ -86,14 +86,14 @@ export default function PrivacySettings({
                   flex items-start gap-3 rounded-xl border p-3 text-left
                   transition-all duration-200
                   ${value.dataRetention === ret
-                    ? "border-[var(--primary)]/30 bg-[var(--primary)]/10 text-white"
-                    : "border-white/10 bg-white/5 text-zinc-400 hover:text-white hover:bg-white/8"
+                    ? "border-[var(--primary)]/50 bg-[var(--primary)]/15 text-[var(--primary)] font-semibold shadow-sm"
+                    : "border-[var(--border)] bg-[var(--surface-2,rgba(255,255,255,0.04))] text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--surface-hover)]"
                   }
                 `}
               >
                 <div>
-                  <p className="text-sm font-medium">{label}</p>
-                  <p className="text-[10px] opacity-60 mt-0.5">{desc}</p>
+                  <p className="text-sm font-medium text-[var(--text)]">{label}</p>
+                  <p className="text-[10px] opacity-80 mt-0.5">{desc}</p>
                 </div>
               </button>
             ))}
@@ -104,8 +104,8 @@ export default function PrivacySettings({
         <GlassCard className="md:col-span-2 !hover:-translate-y-0">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <p className="font-semibold">Clear All Local Data</p>
-              <p className="mt-1 text-sm text-zinc-400">
+              <p className="font-semibold text-[var(--text)]">Clear All Local Data</p>
+              <p className="mt-1 text-sm text-[var(--text-secondary)]">
                 Permanently delete all stored tasks, habits, goals, and notes from this device.
                 Your settings will be preserved.
               </p>
@@ -116,8 +116,8 @@ export default function PrivacySettings({
                 shrink-0 rounded-2xl border px-6 py-3 text-sm font-medium
                 transition-all duration-200
                 ${cleared
-                  ? "border-green-500/30 bg-green-500/10 text-green-400"
-                  : "border-red-500/30 bg-red-500/10 text-red-400 hover:bg-red-500/20"
+                  ? "border-green-500/30 bg-green-500/10 text-green-500"
+                  : "border-red-500/30 bg-red-500/10 text-red-500 hover:bg-red-500/20"
                 }
               `}
             >

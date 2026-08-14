@@ -11,10 +11,10 @@ export function SectionCard({
 }: SectionCardProps) {
   return (
     <section
-      className={`rounded-3xl border border-zinc-800 bg-zinc-900/60 p-6 shadow-lg backdrop-blur ${className}`}
+      className={`rounded-3xl border border-[var(--border)] bg-[var(--card)] p-6 shadow-lg backdrop-blur ${className}`}
     >
       {title && (
-        <h2 className="mb-6 text-xl font-semibold text-white">
+        <h2 className="mb-6 text-xl font-semibold text-[var(--text)]">
           {title}
         </h2>
       )}
@@ -22,4 +22,4 @@ export function SectionCard({
       {children}
     </section>
   );
-}
+}

@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { GlassCard } from "@/components/ui/GlassCard";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/cn";
 
 interface DashboardPanelProps {
   title?: string;
@@ -14,9 +14,9 @@ export function DashboardPanel({
   className = "",
 }: DashboardPanelProps) {
   return (
-    <GlassCard className={cn("border-zinc-800 bg-zinc-900", className)}>
-      <h2 className="text-lg font-medium text-zinc-100 mb-4">{title}</h2>
-      <div className="p-4">{children}</div>
+    <GlassCard className={cn("border-[var(--border)]", className)}>
+      {title && <h2 className="text-lg font-bold font-heading text-[var(--text)] mb-4">{title}</h2>}
+      <div>{children}</div>
     </GlassCard>
   );
 }

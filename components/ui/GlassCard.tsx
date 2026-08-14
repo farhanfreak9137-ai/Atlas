@@ -14,21 +14,36 @@ export function GlassCard({
     <div
       className={cn(
         `
-        glass
-        smooth
-        rounded-[28px]
-        border
-        border-white/10
-        p-4 sm:p-6
+        glass-card-glow
 
-        hover:-translate-y-1
-        hover:border-[#1F7A5B]/30
-        hover:shadow-[0_0_40px_rgba(31,122,91,.12)]
+        relative
+        overflow-hidden
+        rounded-2xl
+
+        border
+        border-[var(--border)]
+
+        bg-[var(--card)]
+
+        backdrop-blur-xl
+
+        p-5 sm:p-6
+
+        shadow-[var(--shadow-card)]
+
+        hover:-translate-y-px
+        hover:border-[var(--primary)]/25
+        hover:shadow-[var(--shadow-glow)]
         `,
         className
       )}
+      style={{
+        transition:
+          "transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease",
+      }}
     >
       {children}
     </div>
   );
 }
+

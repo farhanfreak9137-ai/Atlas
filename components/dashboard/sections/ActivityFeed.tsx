@@ -5,6 +5,7 @@ import { useEffect, useMemo } from "react";
 import { useTaskStore } from "@/stores/task.store";
 import { useHabitStore } from "@/stores/habit.store";
 import { useGoalStore } from "@/stores/goal.store";
+import { GlassCard } from "@/components/ui/GlassCard";
 
 export function ActivityFeed() {
   const {
@@ -51,27 +52,27 @@ export function ActivityFeed() {
   }, [tasks, habits, goals]);
 
   return (
-    <div className="rounded-2xl border border-accent/60 bg-accent/10 p-6">
-      <h2 className="mb-5 text-xl font-semibold text-accent">
+    <GlassCard>
+      <h2 className="mb-5 text-xl font-bold font-heading text-[var(--text)]">
         Recent Activity
       </h2>
 
       <div className="space-y-3">
         {activities.length === 0 ? (
-          <p className="text-accent">
+          <p className="text-[var(--text-tertiary)] font-medium italic text-sm">
             Nothing yet.
           </p>
         ) : (
           activities.map((activity) => (
             <div
               key={activity.id}
-              className="rounded-xl bg-accent/20 p-3"
+              className="rounded-xl border border-[var(--border)] bg-[var(--surface-2,rgba(255,255,255,0.04))] p-3 text-[var(--text)] font-medium text-sm hover:bg-[var(--surface-hover)] transition"
             >
               {activity.title}
             </div>
           ))
         )}
       </div>
-    </div>
+    </GlassCard>
   );
 }

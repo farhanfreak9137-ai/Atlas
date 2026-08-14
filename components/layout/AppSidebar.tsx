@@ -1,18 +1,18 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { navigation } from "@/lib/navigation";
+import { navigation, navGroups } from "@/lib/navigation";
 
 export function AppSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="relative hidden lg:flex w-80 p-6">
+    <aside className="relative hidden lg:flex w-64 p-5">
 
       {/* Glass Container */}
-
       <div
         className="
           flex
@@ -20,23 +20,22 @@ export function AppSidebar() {
           w-full
           flex-col
 
-          rounded-[32px]
+          rounded-[28px]
 
           border
-          border-white/10
+          border-[var(--sidebar-border)]
 
-          bg-white/[0.05]
+          bg-[var(--card)]
 
-          backdrop-blur-3xl
+          backdrop-blur-xl
 
-          shadow-[0_20px_80px_rgba(0,0,0,.45)]
+          shadow-[var(--shadow-card),inset_0_1px_0_0_rgba(255,255,255,0.07)]
 
           overflow-hidden
         "
       >
 
-        {/* Glow */}
-
+        {/* Subtle top glow */}
         <div
           className="
             absolute
@@ -45,7 +44,8 @@ export function AppSidebar() {
             h-40
 
             bg-gradient-to-b
-            from-[#1F7A5B]/15
+            from-[var(--primary)]/12
+            via-transparent
             to-transparent
 
             pointer-events-none
@@ -53,166 +53,162 @@ export function AppSidebar() {
         />
 
         {/* Logo */}
+        <div className="relative px-6 pt-7 pb-5">
+          <div className="flex items-center gap-3">
 
-        <div className="relative p-8">
-
-          <div className="flex items-center gap-4">
-
-            <div
-              className="
-                flex
-                h-14
-                w-14
-                items-center
-                justify-center
-
-                rounded-2xl
-
-                bg-gradient-to-br
-                from-[#1F7A5B]
-                to-[#2A8F66]
-
-                text-xl
-                font-bold
-
-                shadow-lg
-                shadow-[0_20px_60px_rgba(31,122,91,.25)]
-              "
-            >
-              A
+            {/* Icon */}
+            <div className="relative h-9 w-9 flex-shrink-0">
+              <Image
+                src="/atlas-icon.png"
+                alt="Atlas icon"
+                width={36}
+                height={36}
+                className="object-contain drop-shadow-[0_0_10px_var(--primary-glow)]"
+                priority
+              />
             </div>
 
+            {/* Wordmark */}
             <div>
-
-              <h1 className="text-3xl font-bold tracking-tight">
+              <h1 className="text-xl font-semibold font-heading tracking-tight text-[var(--text)]">
                 Atlas
               </h1>
-
-              <p className="mt-1 text-sm text-zinc-400">
-                Personal OS
+              <p className="mt-0.5 text-[10px] font-semibold uppercase tracking-widest text-[var(--primary)]">
+                Personal AI OS
               </p>
-
             </div>
 
           </div>
-
         </div>
 
         {/* Divider */}
+        <div className="mx-5 h-px bg-[var(--border)]" />
 
-        <div className="mx-6 h-px bg-white/10" />
+        {/* Navigation — grouped sections */}
+        <nav className="flex-1 overflow-y-auto px-3 py-3 space-y-4 no-scrollbar">
 
-        {/* Navigation */}
-
-        <nav className="flex-1 space-y-2 p-6">
-
-          {navigation.map((item) => {
-            const Icon = item.icon;
-
-            const active =
-              pathname === item.href;
+          {navGroups.map((group) => {
+            const items = navigation.filter((item) => item.group === group.key);
+            if (items.length === 0) return null;
 
             return (
-              <Link
-                key={item.title}
-                href={item.href}
-                className={`
-                  group
+              <div key={group.key}>
 
-                  flex
-                  items-center
-                  gap-4
+                {/* Section label */}
+                <p className="px-3 pb-1.5 text-[10px] font-bold uppercase tracking-widest text-[var(--text-tertiary,#64748b)]">
+                  {group.label}
+                </p>
 
-                  rounded-2xl
+                <div className="space-y-0.5">
+                  {items.map((item) => {
+                    const Icon = item.icon;
+                    const active = pathname === item.href;
 
-                  px-5
-                  py-4
+                    return (
+                      <Link
+                        key={item.title}
+                        href={item.href}
+                        aria-current={active ? "page" : undefined}
+                        className={`
+                          group
+                          relative
 
-                  transition-all
-                  duration-300
+                          flex
+                          items-center
+                          gap-3
 
-                  ${
-                    active
-                      ? `
-                        bg-[#1F7A5B]/15
-                        text-white
+                          rounded-xl
 
-                        border
-                        border-[#1F7A5B]/20
+                          px-3
+                          py-2.5
 
-                        shadow-lg
-                        shadow-[0_10px_40px_rgba(31,122,91,.10)]
-                      `
-                      : `
-                        text-zinc-400
+                          ${
+                            active
+                              ? `
+                                bg-[var(--primary)]/10
+                                text-[var(--text)]
+                                font-semibold
+                              `
+                              : `
+                                text-[var(--text-secondary)]
+                                hover:bg-white/5
+                                hover:text-[var(--text)]
+                              `
+                          }
+                        `}
+                        style={{
+                          transition:
+                            "background-color 150ms ease, color 150ms ease",
+                        }}
+                      >
+                        {/* Left-edge active indicator bar — Linear-style */}
+                        {active && (
+                          <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-full bg-[var(--primary)] shadow-[0_0_8px_var(--primary-glow)]" />
+                        )}
 
-                        hover:bg-white/5
-                        hover:text-white
-                      `
-                  }
-                `}
-              >
+                        <Icon
+                          size={18}
+                          className={`
+                            flex-shrink-0
+                            transition-transform
+                            duration-200
+                            group-hover:scale-105
+                            ${active
+                              ? "text-[var(--primary)]"
+                              : "text-[var(--text-tertiary,#64748b)] group-hover:text-[var(--text)]"
+                            }
+                          `}
+                        />
 
-                <Icon
-                  size={22}
-                  className="
-                    transition-transform
-                    duration-300
+                        <span className="text-sm">
+                          {item.title}
+                        </span>
 
-                    group-hover:scale-110
-                  "
-                />
+                      </Link>
+                    );
+                  })}
+                </div>
 
-                <span className="font-medium">
-                  {item.title}
-                </span>
-
-              </Link>
+              </div>
             );
           })}
 
         </nav>
 
-        {/* Bottom */}
-
-        <div className="p-6">
+        {/* Bottom — Productivity widget */}
+        <div className="p-4">
 
           <div
             className="
-              rounded-3xl
-
+              rounded-2xl
               border
-              border-white/10
-
-              bg-white/5
-
-              p-5
+              border-[var(--border)]
+              bg-[var(--surface-2,rgba(255,255,255,0.04))]
+              p-4
             "
           >
 
-            <p className="text-sm text-zinc-400">
-              Productivity
-            </p>
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-tertiary,#64748b)]">
+                Productivity
+              </p>
+              <span className="text-lg font-bold font-heading tabular-nums text-[var(--text)]">
+                82%
+              </span>
+            </div>
 
-            <h2 className="mt-2 text-3xl font-bold">
-              82%
-            </h2>
-
-            <div className="mt-4 h-2 rounded-full bg-white/10">
-
+            <div className="h-1.5 rounded-full bg-white/10 overflow-hidden">
               <div
                 className="
                   h-full
                   w-[82%]
-
                   rounded-full
-
                   bg-gradient-to-r
-                  from-[#1F7A5B]
-                  to-[#2A8F66]
+                  from-[var(--primary)]
+                  to-emerald-400
+                  shadow-[0_0_8px_rgba(16,185,129,0.4)]
                 "
               />
-
             </div>
 
           </div>

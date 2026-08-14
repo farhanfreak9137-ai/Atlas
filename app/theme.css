@@ -1,32 +1,38 @@
 :root {
 
-  --bg: #050816;
-  --bg-secondary: #0B1120;
+  --bg: #060913;
+  --bg-secondary: #0A1120;
 
-  --surface: rgba(17,24,39,.55);
-  --surface-hover: rgba(30,41,59,.65);
+  --surface: rgba(15, 23, 42, 0.65);
+  --surface-hover: rgba(30, 41, 59, 0.75);
 
-  --glass: rgba(31,122,91,.06);
-  --glass-strong: rgba(31,122,91,.10);
+  --glass: rgba(16, 185, 129, 0.05);
+  --glass-strong: rgba(16, 185, 129, 0.12);
 
-  --border: rgba(31,122,91,.08);
+  --border: rgba(255, 255, 255, 0.10);
 
-  --primary: #1F7A5B;
-  --primary-hover: #2A8F66;
+  --primary: #10B981;
+  --primary-hover: #059669;
 
-  --cyan: #2DD4BF;
-  --purple: #8B5CF6;
+  --cyan: #06B6D4;
+  --purple: #A855F7;
 
-  --success: #22C55E;
+  --success: #10B981;
   --warning: #F59E0B;
   --danger: #EF4444;
 
-  --text: white;
+  --text: #F8FAFC;
   --text-secondary: #94A3B8;
 
   --shadow-soft:
-    0 20px 60px rgba(0,0,0,.35);
+    0 20px 60px rgba(0,0,0,.5);
 
   --shadow-glow:
-    0 0 60px rgba(31,122,91,.15);
+    0 0 60px rgba(16,185,129,.25);
 }
+
+/* ── Progress bar fill animation (sidebar productivity widget) ── */
+@keyframes progress-fill {
+  from { width: 0%; opacity: 0.5; }
+  to   { width: 82%; opacity: 1; }
+}

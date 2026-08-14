@@ -52,7 +52,7 @@ export const useDashboardStore = create<StoreShape>()(
       settings: {
         // Appearance
         theme: "dark",
-        accentColor: "#1F7A5B",
+        accentColor: "#10B981",
         fontSize: "medium",
 
         // AI

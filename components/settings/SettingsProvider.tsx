@@ -29,9 +29,11 @@ export function SettingsProvider() {
     function apply(dark: boolean) {
       if (dark) {
         root.classList.add("dark");
+        root.classList.remove("light");
         root.setAttribute("data-theme", "dark");
       } else {
         root.classList.remove("dark");
+        root.classList.add("light");
         root.setAttribute("data-theme", "light");
       }
     }
@@ -52,19 +54,23 @@ export function SettingsProvider() {
     const root = document.documentElement;
     root.style.setProperty("--primary", settings.accentColor);
 
-    // Derive a slightly lighter hover variant
-    root.style.setProperty("--primary-hover", settings.accentColor + "cc");
-
-    // Derive glow
+    // Parse RGB components
     const hex = settings.accentColor.replace("#", "");
     const r = parseInt(hex.slice(0, 2), 16);
     const g = parseInt(hex.slice(2, 4), 16);
     const b = parseInt(hex.slice(4, 6), 16);
+
+    // Set RGB triplet for use in rgba() CSS expressions
+    root.style.setProperty("--primary-rgb", `${r},${g},${b}`);
+
+    // Derive hover variant (slightly darker)
+    root.style.setProperty("--primary-hover", `rgba(${r},${g},${b},0.85)`);
+
+    // Derive glow + glass
     root.style.setProperty("--primary-glow", `rgba(${r},${g},${b},0.35)`);
-    root.style.setProperty("--shadow-glow", `0 0 60px rgba(${r},${g},${b},0.15)`);
-    root.style.setProperty("--glass", `rgba(${r},${g},${b},0.06)`);
+    root.style.setProperty("--shadow-glow", `0 0 30px rgba(${r},${g},${b},0.18)`);
+    root.style.setProperty("--glass", `rgba(${r},${g},${b},0.05)`);
     root.style.setProperty("--glass-strong", `rgba(${r},${g},${b},0.10)`);
-    root.style.setProperty("--border", `rgba(${r},${g},${b},0.08)`);
   }, [settings.accentColor]);
 
   // ─── Font Size ─────────────────────────────────────────────────────

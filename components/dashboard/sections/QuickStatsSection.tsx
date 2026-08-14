@@ -42,7 +42,7 @@ export function QuickStatsSection({
           <InfoCard
             title="Tasks"
             value={`${dashboard.tasks.active} Active`}
-            icon={<CheckSquare size={24} color="#34C759" />}
+            icon={<CheckSquare size={22} className="text-[var(--primary)]" />}
           />
         )}
 
@@ -50,7 +50,7 @@ export function QuickStatsSection({
           <InfoCard
             title="Habits"
             value={`${dashboard.habits.completed} / ${dashboard.habits.total}`}
-            icon={<Droplets size={24} color="#34C759" />}
+            icon={<Droplets size={22} className="text-[var(--primary)]" />}
           />
         )}
 
@@ -58,7 +58,7 @@ export function QuickStatsSection({
           <InfoCard
             title="Goals"
             value={`${dashboard.goals.active} Active`}
-            icon={<FolderKanban size={24} color="#34C759" />}
+            icon={<FolderKanban size={22} className="text-[var(--primary)]" />}
           />
         )}
 
@@ -67,23 +67,25 @@ export function QuickStatsSection({
             <InfoCard
               title="Productivity"
               value={`${dashboard.productivity}%`}
-              icon={<Activity size={24} color="#34C759" />}
+              icon={<Activity size={22} className="text-[var(--primary)]" />}
             />
 
             <InfoCard
               title="Gym"
               value={`${dashboard.gymStats.streak} day streak`}
-              icon={<Dumbbell size={24} color="#34C759" />}
+              icon={<Dumbbell size={22} className="text-[var(--primary)]" />}
             />
 
             <InfoCard
               title="Football"
               value={`${dashboard.footballStats.totalGoals} goals`}
-              icon={<Trophy size={24} color="#34C759" />}
+              icon={<Trophy size={22} className="text-[var(--primary)]" />}
             />
           </>
         )}
       </div>
     </section>
   );
-}
+}
+
+

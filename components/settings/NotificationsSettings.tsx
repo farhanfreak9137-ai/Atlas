@@ -48,7 +48,7 @@ export default function NotificationsSettings({
         action={
           <button
             onClick={toggleAll}
-            className="text-sm text-zinc-400 hover:text-white transition-colors"
+            className="text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--primary)] transition-colors"
           >
             {allOn ? "Disable all" : "Enable all"}
           </button>
@@ -67,15 +67,15 @@ export default function NotificationsSettings({
                   flex items-center gap-3 rounded-2xl border p-4
                   transition-all duration-200 text-left
                   ${enabled
-                    ? "border-[var(--primary)]/30 bg-[var(--primary)]/10 text-white"
-                    : "border-white/10 bg-white/5 text-zinc-500 hover:text-zinc-300 hover:bg-white/8"
+                    ? "border-[var(--primary)]/50 bg-[var(--primary)]/15 text-[var(--primary)] font-semibold shadow-sm"
+                    : "border-[var(--border)] bg-[var(--surface-2,rgba(255,255,255,0.04))] text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--surface-hover)]"
                   }
                 `}
               >
                 <span className="text-xl">{cat.emoji}</span>
                 <div>
-                  <p className="text-sm font-medium">{cat.label}</p>
-                  <p className="text-[10px] mt-0.5 opacity-60">
+                  <p className="text-sm font-medium text-[var(--text)]">{cat.label}</p>
+                  <p className="text-[10px] mt-0.5 opacity-80">
                     {enabled ? "On" : "Off"}
                   </p>
                 </div>

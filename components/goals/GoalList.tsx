@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 
 import { useGoalStore } from "@/stores/goal.store";
+import { EmptyState } from "@/components/common/EmptyState";
 
 import { GoalForm } from "./GoalForm";
 import { GoalItem } from "./GoalItem";
@@ -25,17 +26,12 @@ export function GoalList() {
       <GoalForm onAdd={create} />
 
       {goals.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-zinc-700 py-16 text-center">
-          <h3 className="text-xl font-semibold text-white">
-            No goals yet
-          </h3>
-
-          <p className="mt-2 text-zinc-500">
-            Create your first goal above.
-          </p>
-        </div>
+        <EmptyState
+          title="No goals set yet"
+          description="Create your first goal above to start tracking your long-term milestones."
+        />
       ) : (
-        <div className="space-y-4">
+        <div className="grid gap-4 md:grid-cols-2">
           {goals.map((goal) => (
             <GoalItem
               key={goal.id}

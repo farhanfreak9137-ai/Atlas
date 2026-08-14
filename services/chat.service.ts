@@ -1,19 +1,26 @@
 import { ChatMessage } from "@/types/chat";
 import { useChatStore } from "@/stores/chat.store";
 import { useDashboardStore } from "@/stores/dashboard.store";
+import { useProfileStore } from "@/stores/profile.store";
 import { Storage } from "@/lib/storage/storage";
 import { STORAGE_KEYS } from "@/lib/constants/storageKeys";
 
 // ---------------------------------------------------------------------------
 // Atlas context builder
-// Reads all your real data from localStorage and formats it for the AI
+// Reads all user profile details & module data and formats it for the AI
 // ---------------------------------------------------------------------------
 function buildAtlasContext(): string {
+  const profile = useProfileStore.getState().profile;
+
   const tasks = Storage.get<any[]>(STORAGE_KEYS.TASKS) ?? [];
   const habits = Storage.get<any[]>(STORAGE_KEYS.HABITS) ?? [];
   const goals = Storage.get<any[]>(STORAGE_KEYS.GOALS) ?? [];
   const notes = Storage.get<any[]>(STORAGE_KEYS.NOTES) ?? [];
   const reminders = Storage.get<any[]>(STORAGE_KEYS.REMINDERS) ?? [];
+  const journal = Storage.get<any[]>(STORAGE_KEYS.JOURNAL) ?? [];
+  const gymWorkouts = Storage.get<any[]>(STORAGE_KEYS.GYM_WORKOUTS) ?? [];
+  const footballMatches = Storage.get<any[]>(STORAGE_KEYS.FOOTBALL_MATCHES) ?? [];
+  const studySessions = Storage.get<any[]>(STORAGE_KEYS.STUDY_SESSIONS) ?? [];
 
   const today = new Date().toDateString();
 
@@ -41,13 +48,27 @@ function buildAtlasContext(): string {
     : "MODE: Precise mode. Be factual, logical, and direct.";
 
   return `
-You are Atlas, the user's personal AI assistant embedded inside their Atlas life OS.
-You have full context of their real data. Be insightful, specific, and helpful.
-Never say you don't have access to their data — you do, it's provided below.
+You are Atlas, the user's personal AI assistant embedded inside their personal life OS.
+You know their personal biography, profile, habits, tasks, fitness goals, and notes. Be insightful, specific, empathetic, and highly personal.
+Address them by their name (${profile.name || "there"}).
+Never say you don't have access to their personal background or data — you have full access provided below.
 Today's date: ${today}
 
 ${verbosityInstructions[settings.aiVerbosity] ?? verbosityInstructions[3]}
 ${creativeInstruction}
+
+=== USER PROFILE & BIOGRAPHY ===
+- Name: ${profile.name || "Not specified"}
+- Email: ${profile.email || "Not specified"}
+- Occupation: ${profile.occupation || "Not specified"}
+- Location/City: ${profile.city || "Not specified"}
+- Date of Birth: ${profile.dateOfBirth || "Not specified"}
+- Gender: ${profile.gender || "Not specified"}
+- Height: ${profile.heightCm ? `${profile.heightCm} cm` : "Not specified"}
+- Weight: ${profile.weightKg ? `${profile.weightKg} kg` : "Not specified"}
+- Activity Level: ${profile.activityLevel || "Not specified"}
+- Primary Fitness Goal: ${profile.fitnessGoal || "Not specified"}
+- Personal Biography & Context: ${profile.bio ? profile.bio : "No bio entered yet."}
 
 === TASKS ===
 Pending (${pendingTasks.length}):
@@ -62,11 +83,17 @@ ${habits.length === 0 ? "No habits tracked yet." : todaysHabits.map((h) => `- ${
 === GOALS ===
 ${activeGoals.length === 0 ? "No active goals." : activeGoals.map((g) => `- ${g.title}${g.progress !== undefined ? ` (${g.progress}% complete)` : ""}${g.deadline ? ` — deadline: ${g.deadline}` : ""}`).join("\n")}
 
-=== NOTES ===
-${notes.length === 0 ? "No notes." : notes.slice(0, 10).map((n) => `- ${n.title ?? "Untitled"}${n.content ? `: ${String(n.content).slice(0, 100)}` : ""}`).join("\n")}
+=== NOTES & RECENT JOURNAL ===
+Notes (${notes.length}):
+${notes.length === 0 ? "No notes." : notes.slice(0, 5).map((n) => `- ${n.title ?? "Untitled"}${n.content ? `: ${String(n.content).slice(0, 120)}` : ""}`).join("\n")}
 
-=== REMINDERS ===
-${reminders.length === 0 ? "No reminders." : reminders.map((r) => `- ${r.title}${r.datetime ? ` at ${r.datetime}` : ""}`).join("\n")}
+Journal Reflections (${journal.length}):
+${journal.length === 0 ? "No journal entries yet." : journal.slice(0, 5).map((j) => `- [${j.date || "Recent"}] ${j.content ? String(j.content).slice(0, 120) : "Entry"}`).join("\n")}
+
+=== FITNESS & LEARNING SUMMARY ===
+- Gym Workouts Tracked: ${gymWorkouts.length}
+- Football Matches Tracked: ${footballMatches.length}
+- Study Sessions Tracked: ${studySessions.length}
 `.trim();
 }
 
@@ -115,6 +142,13 @@ export class ChatService {
 
     useChatStore.getState().setLoading(true);
 
+    const modelsToTry = [
+      "openrouter/free",
+      "google/gemini-2.0-flash-lite-001",
+      "meta-llama/llama-3.3-70b-instruct:free",
+      "google/gemini-flash-1.5:free",
+    ];
+
     try {
       const settings = useDashboardStore.getState().settings;
       const systemPrompt = buildAtlasContext();
@@ -124,42 +158,54 @@ export class ChatService {
           )
         : [];
 
-      const response = await fetch(
-        "https://openrouter.ai/api/v1/chat/completions",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENROUTER_API_KEY}`,
-            "HTTP-Referer": "https://atlas.app", // optional but recommended by OpenRouter
-            "X-Title": "Atlas Personal OS",      // optional, shows in OpenRouter dashboard
-          },
-          body: JSON.stringify({
-            model: "google/gemini-2.0-flash-exp:free", // free model — change anytime
-            temperature: settings.creativeMode ? 0.9 : 0.3,
-            messages: [
-              { role: "system", content: systemPrompt },
-              ...history,
-              { role: "user", content: userMessage },
-            ],
-          }),
-        }
-      );
+      let lastErrorMessage = "";
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error?.message ?? "AI request failed");
+      for (const model of modelsToTry) {
+        try {
+          const response = await fetch(
+            "https://openrouter.ai/api/v1/chat/completions",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENROUTER_API_KEY}`,
+                "HTTP-Referer": "https://atlas.app",
+                "X-Title": "Atlas Personal OS",
+              },
+              body: JSON.stringify({
+                model,
+                temperature: settings.creativeMode ? 0.9 : 0.3,
+                messages: [
+                  { role: "system", content: systemPrompt },
+                  ...history,
+                  { role: "user", content: userMessage },
+                ],
+              }),
+            }
+          );
+
+          if (!response.ok) {
+            const error = await response.json().catch(() => ({}));
+            lastErrorMessage = error.error?.message ?? `Model ${model} failed`;
+            continue; // try next model in fallback list
+          }
+
+          const data = await response.json();
+          const aiResponse =
+            data.choices?.[0]?.message?.content ??
+            "Sorry, I couldn't generate a response. Please try again.";
+
+          const aiMsg = this.generateMessage(aiResponse, "ai");
+          this.add(aiMsg);
+
+          return aiResponse;
+        } catch (err) {
+          lastErrorMessage =
+            err instanceof Error ? err.message : `Failed connecting to ${model}`;
+        }
       }
 
-      const data = await response.json();
-      const aiResponse =
-        data.choices?.[0]?.message?.content ??
-        "Sorry, I couldn't generate a response. Please try again.";
-
-      const aiMsg = this.generateMessage(aiResponse, "ai");
-      this.add(aiMsg);
-
-      return aiResponse;
+      throw new Error(lastErrorMessage || "All AI models are currently unavailable.");
     } catch (error) {
       const errorMsg =
         error instanceof Error ? error.message : "Something went wrong.";

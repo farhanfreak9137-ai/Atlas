@@ -36,16 +36,16 @@ export function NoteList() {
       <SearchBar
         value={search}
         onChange={setSearch}
-        placeholder="Search notes..."
+        placeholder="Search notes by title or content..."
       />
 
       {filtered.length === 0 ? (
         <EmptyState
-          title="No Notes"
-          description="Create your first note."
+          title="No notes found"
+          description="Create your first note above to capture ideas."
         />
       ) : (
-        <div className="space-y-4">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {filtered.map((note) => (
             <NoteCard
               key={note.id}

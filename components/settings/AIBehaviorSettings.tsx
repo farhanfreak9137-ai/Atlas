@@ -33,8 +33,8 @@ export default function AIBehaviorSettings({
 
         {/* Verbosity */}
         <GlassCard className="!hover:-translate-y-0">
-          <p className="text-sm font-semibold text-zinc-400 mb-1">Response Verbosity</p>
-          <p className="text-xs text-zinc-500 mb-4">
+          <p className="text-sm font-semibold text-[var(--text-secondary)] mb-1">Response Verbosity</p>
+          <p className="text-xs text-[var(--text-tertiary)] mb-4">
             How detailed should AI replies be?
           </p>
           <div className="flex flex-col gap-2">
@@ -46,7 +46,7 @@ export default function AIBehaviorSettings({
                 className="justify-between"
               >
                 <span>{VERBOSITY_LABELS[level]}</span>
-                <span className="text-xs opacity-50">{level}/5</span>
+                <span className="text-xs opacity-60 font-mono">{level}/5</span>
               </ToggleButton>
             ))}
           </div>
@@ -54,8 +54,8 @@ export default function AIBehaviorSettings({
 
         {/* Creative Mode */}
         <GlassCard className="!hover:-translate-y-0">
-          <p className="text-sm font-semibold text-zinc-400 mb-1">Creative Mode</p>
-          <p className="text-xs text-zinc-500 mb-4">
+          <p className="text-sm font-semibold text-[var(--text-secondary)] mb-1">Creative Mode</p>
+          <p className="text-xs text-[var(--text-tertiary)] mb-4">
             When on, the AI generates more imaginative and experimental responses.
           </p>
           <div className="flex flex-col gap-2">
@@ -77,8 +77,8 @@ export default function AIBehaviorSettings({
 
           <div className={`mt-4 rounded-xl p-3 text-xs transition-all ${
             value.creativeMode
-              ? "bg-violet-500/10 text-violet-300 border border-violet-500/20"
-              : "bg-white/5 text-zinc-400"
+              ? "bg-violet-500/10 text-violet-500 border border-violet-500/20 font-medium"
+              : "bg-[var(--surface-2)] text-[var(--text-secondary)]"
           }`}>
             {value.creativeMode
               ? "AI will take creative liberties and explore ideas freely."
@@ -88,8 +88,8 @@ export default function AIBehaviorSettings({
 
         {/* Remember History */}
         <GlassCard className="!hover:-translate-y-0">
-          <p className="text-sm font-semibold text-zinc-400 mb-1">Conversation Memory</p>
-          <p className="text-xs text-zinc-500 mb-4">
+          <p className="text-sm font-semibold text-[var(--text-secondary)] mb-1">Conversation Memory</p>
+          <p className="text-xs text-[var(--text-tertiary)] mb-4">
             Should the AI remember past conversations to give better advice?
           </p>
           <div className="flex flex-col gap-2">

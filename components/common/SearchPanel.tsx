@@ -178,63 +178,67 @@ export function SearchPanel() {
   return (
     <>
       {open && (
-        <div className="fixed inset-0 z-50 flex items-start justify-center pt-24 px-4">
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-24 px-4 bg-black/40 backdrop-blur-sm">
           <div className="w-full max-w-2xl" ref={panelRef}>
-            <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-4 shadow-xl">
+            <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4 shadow-2xl backdrop-blur-xl">
               <input
                 ref={inputRef}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search Atlas..."
-                className="w-full rounded-lg border border-zinc-800 bg-transparent px-4 py-3 outline-none text-white"
+                className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface-2,rgba(255,255,255,0.05))] px-4 py-3 outline-none text-[var(--text)] placeholder:text-[var(--text-tertiary)]"
                 autoFocus
               />
 
-              <div className="mt-3 max-h-80 overflow-auto">
+              <div className="mt-3 max-h-80 overflow-auto no-scrollbar">
                 {query.trim() === "" ? (
                   <div className="space-y-2">
-                    <h4 className="text-sm text-zinc-400">Recent searches</h4>
+                    <h4 className="text-sm font-semibold text-[var(--text-secondary)]">Recent searches</h4>
                     <div className="flex flex-wrap gap-2 mt-2">
                       {(recent || []).map((r) => (
                         <button
                           key={r}
                           onClick={() => onRecentClick(r)}
-                          className="rounded-full bg-zinc-800/50 px-3 py-1 text-sm text-zinc-200"
+                          className="rounded-full bg-[var(--surface-2)] border border-[var(--border)] px-3 py-1 text-sm text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--surface-hover)] transition"
                         >
                           {r}
                         </button>
                       ))}
                       {(!recent || recent.length === 0) && (
-                        <div className="text-sm text-zinc-500">No recent searches</div>
+                        <div className="text-sm text-[var(--text-tertiary)] font-medium">No recent searches</div>
                       )}
                     </div>
                   </div>
                 ) : results.total === 0 ? (
-                  <div className="p-6 text-center text-zinc-400">
-                    <h3 className="text-white">No results found</h3>
-                    <p className="mt-1 text-sm">Try different keywords or check spelling.</p>
+                  <div className="p-6 text-center text-[var(--text-secondary)]">
+                    <h3 className="text-[var(--text)] font-semibold">No results found</h3>
+                    <p className="mt-1 text-sm text-[var(--text-tertiary)]">Try different keywords or check spelling.</p>
                   </div>
                 ) : (
                   Array.from(results.groups.entries()).map(([group, items]) => (
                     <div key={group} className="mb-4">
-                      <h5 className="text-xs text-zinc-400 uppercase mb-2">{group}</h5>
-                      <div className="space-y-2">
-                        {items.map((it, idx) => {
+                      <h5 className="text-xs font-bold text-[var(--text-tertiary)] uppercase tracking-wider mb-2">{group}</h5>
+                      <div className="space-y-1">
+                        {items.map((it) => {
                           const globalIndex = flatResults.findIndex((f) => f.id === it.id && f.type === it.type);
                           const selected = globalIndex === selectedIndex;
                           return (
                             <button
                               key={`${it.type}-${it.id}`}
                               onClick={() => onSelect(it)}
-                              className={`w-full text-left rounded-lg px-3 py-2 transition flex justify-between items-start ${selected ? "bg-blue-600/10" : "hover:bg-zinc-800"}`}
+                              className={`w-full text-left rounded-xl px-3 py-2.5 transition flex justify-between items-center ${
+                                selected
+                                  ? "bg-[var(--primary)]/15 border border-[var(--primary)]/30 text-[var(--primary)] font-semibold"
+                                  : "hover:bg-[var(--surface-hover)] text-[var(--text)]"
+                              }`}
                             >
                               <div>
-                                <div className="font-medium">{it.title}</div>
+                                <div className="font-medium text-sm text-[var(--text)]">{it.title}</div>
                                 {it.subtitle && (
-                                  <div className="text-xs text-zinc-400 mt-1">{it.subtitle}</div>
+                                  <div className="text-xs text-[var(--text-secondary)] mt-0.5">{it.subtitle}</div>
                                 )}
                               </div>
-                              <div className="text-xs text-zinc-500 ml-4">{it.type}</div>
+                              <div className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-[var(--surface-3)] text-[var(--text-tertiary)] shrink-0 ml-4">{it.type}</div>
                             </button>
                           );
                         })}

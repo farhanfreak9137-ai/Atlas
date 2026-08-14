@@ -5,12 +5,12 @@ import { SectionHeader } from "@/components/ui/SectionHeader";
 import { ToggleButton } from "@/components/ui/ToggleButton";
 
 const ACCENT_COLORS = [
-  { label: "Emerald",  hex: "#1F7A5B" },
-  { label: "Violet",   hex: "#7C3AED" },
+  { label: "Emerald",  hex: "#10B981" },
+  { label: "Violet",   hex: "#8B5CF6" },
   { label: "Sky",      hex: "#0284C7" },
-  { label: "Rose",     hex: "#E11D48" },
-  { label: "Amber",    hex: "#D97706" },
-  { label: "Cyan",     hex: "#0891B2" },
+  { label: "Rose",     hex: "#F43F5E" },
+  { label: "Amber",    hex: "#F59E0B" },
+  { label: "Cyan",     hex: "#06B6D4" },
 ];
 
 type FontSize = "small" | "medium" | "large";
@@ -37,7 +37,7 @@ export default function ThemeSettings({
 
         {/* Color Scheme */}
         <GlassCard className="!hover:-translate-y-0">
-          <p className="text-sm font-semibold text-zinc-400 mb-4">Color Scheme</p>
+          <p className="text-sm font-semibold text-[var(--text-secondary)] mb-4">Color Scheme</p>
           <div className="flex flex-col gap-2">
             {(["dark", "light", "auto"] as Scheme[]).map((s) => (
               <ToggleButton
@@ -54,7 +54,7 @@ export default function ThemeSettings({
 
         {/* Accent Color */}
         <GlassCard className="!hover:-translate-y-0">
-          <p className="text-sm font-semibold text-zinc-400 mb-4">Accent Color</p>
+          <p className="text-sm font-semibold text-[var(--text-secondary)] mb-4">Accent Color</p>
           <div className="grid grid-cols-3 gap-3">
             {ACCENT_COLORS.map((color) => (
               <button
@@ -65,8 +65,8 @@ export default function ThemeSettings({
                   flex flex-col items-center gap-1.5 rounded-xl p-2
                   transition-all duration-200
                   ${value.accentColor === color.hex
-                    ? "ring-2 ring-white/60 ring-offset-1 ring-offset-transparent"
-                    : "opacity-60 hover:opacity-100"
+                    ? "ring-2 ring-[var(--primary)] ring-offset-2 ring-offset-[var(--card)] font-bold"
+                    : "opacity-70 hover:opacity-100"
                   }
                 `}
               >
@@ -74,7 +74,7 @@ export default function ThemeSettings({
                   className="h-8 w-8 rounded-full shadow-lg"
                   style={{ backgroundColor: color.hex }}
                 />
-                <span className="text-[10px] text-zinc-400">{color.label}</span>
+                <span className="text-[10px] text-[var(--text-secondary)] font-medium">{color.label}</span>
               </button>
             ))}
           </div>
@@ -82,7 +82,7 @@ export default function ThemeSettings({
 
         {/* Font Size */}
         <GlassCard className="!hover:-translate-y-0">
-          <p className="text-sm font-semibold text-zinc-400 mb-4">Font Size</p>
+          <p className="text-sm font-semibold text-[var(--text-secondary)] mb-4">Font Size</p>
           <div className="flex flex-col gap-2">
             {([
               ["small",  "Small  — 14px"],
