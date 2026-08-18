@@ -128,8 +128,8 @@ export function NotificationCenter() {
           className="
             absolute right-0 top-12 z-50
             w-80 sm:w-96 rounded-2xl border border-[var(--border)]
-            bg-[var(--card)] backdrop-blur-2xl
-            p-4 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200
+            bg-[var(--popover)] text-[var(--text)]
+            p-4 shadow-[0_20px_60px_rgba(0,0,0,0.55)] animate-in fade-in slide-in-from-top-2 duration-200
           "
         >
           {/* Panel Header */}

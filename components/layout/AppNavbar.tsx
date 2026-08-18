@@ -41,7 +41,7 @@ export function AppNavbar() {
   const PageIcon = currentPage?.icon;
 
   return (
-    <header className="px-3 sm:px-5 lg:px-8 pt-4 sm:pt-5 lg:pt-7">
+    <header className="relative z-40 px-3 sm:px-5 lg:px-8 pt-4 sm:pt-5 lg:pt-7">
       {/* Primary Top Header Card — Pill Navbar */}
       <div
         className="

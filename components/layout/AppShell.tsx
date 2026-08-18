@@ -10,6 +10,7 @@ import { SettingsProvider } from "@/components/settings/SettingsProvider";
 import { ProfilePanel } from "./ProfilePanel";
 import { AuthScreen } from "@/components/auth/AuthScreen";
 import { useAuthStore } from "@/stores/auth.store";
+import { PhoneLockoutModal } from "@/components/habits/PhoneLockoutModal";
 
 interface AppShellProps {
   children: ReactNode;
@@ -91,6 +92,9 @@ export function AppShell({ children }: AppShellProps) {
 
       {/* Global Profile panel */}
       <ProfilePanel />
+
+      {/* Global Phone Lockout Challenge Modal */}
+      <PhoneLockoutModal />
     </div>
   );
 }

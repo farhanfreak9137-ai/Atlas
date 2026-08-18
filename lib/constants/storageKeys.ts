@@ -13,4 +13,5 @@ export const STORAGE_KEYS = {
   STUDY_SUBJECTS: "atlas_study_subjects",
   STUDY_SESSIONS: "atlas_study_sessions",
   STUDY_GRADES: "atlas_study_grades",
+  PHONE_CONTROL: "atlas_phone_control",
 } as const;

@@ -11,6 +11,7 @@ import {
   FolderKanban,
   Settings,
   NotebookPen,
+  Smartphone,
 } from "lucide-react";
 
 export type NavGroup = "overview" | "productivity" | "lifestyle" | "system";
@@ -34,6 +35,12 @@ export const navigation: NavItem[] = [
     href: "/ai",
     icon: Brain,
     group: "overview",
+  },
+  {
+    title: "Focus & Control",
+    href: "/focus",
+    icon: Smartphone,
+    group: "productivity",
   },
   {
     title: "Calendar",

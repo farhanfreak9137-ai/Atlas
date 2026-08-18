@@ -1,3 +1,5 @@
+import { PhoneEnforcementRule } from "./phone-control";
+
 export interface Habit {
   id: string;
   title: string;
@@ -7,4 +9,5 @@ export interface Habit {
   progress: number;
   streak: number;
   completedToday: boolean;
+  enforcementRule?: PhoneEnforcementRule;
 }
